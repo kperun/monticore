@@ -1,0 +1,12 @@
+========================================================== Protocol
+========================================================== Explanation
+Tree structure for template calls.
+Short forms:
+  +--      template call
+  +--SHP   StringHookPoint call
+  +--CHP   CodeHookPoint call
+  +--ASHP  AST StringHookPoint call
+  +--ATHP  AST TemplateHookPoint call
+  +--ACHP  AST CodeHookPoint call
+  +inst    instantiation of java class
+(EOF)

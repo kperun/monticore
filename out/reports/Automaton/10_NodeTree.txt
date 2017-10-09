@@ -1,0 +1,12 @@
+========================================================== Node Tree + Extra Infos
+========================================================== Explanation
+Node Tree: this is the extended form: one with extra infos
+as sublines. The tree itself lists all AST nodes using their identifiers.
+Vertical line: list all the direct children of a node.
+Each node knows about:
+- #Visits through templates (in the raw version) looks like: (2x)
+- files generated originating from this node
+- templates called on this node
+Remark: a "null" as value in the tree means that the tree has been altered
+after parsing. --> this is not yet reflected in the protocol
+(EOF)

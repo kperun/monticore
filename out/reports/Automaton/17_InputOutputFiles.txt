@@ -1,0 +1,15 @@
+========================================================== Input files
+/home/kperun/Dropbox/monticore/master/Automaton.mc4 state error during generation
+====================================================== User templates
+====================================================== Handwritten files
+========================================================== Output files
+========================================================== Explanation
+This report is used to enable incremental generation
+Input files: the list of input files ordered by their paths.
+Types of input files are:
+- Model files
+- Handwritten sourcecode files
+- User specific script files
+- User specific template files
+Output files: the list of generated output files ordered by their paths.
+(EOF)

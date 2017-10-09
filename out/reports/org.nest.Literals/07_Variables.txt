@@ -1,0 +1,9 @@
+========================================================== Variables assigned
+#Asmt  #Adds  Variable name
+========================================================== Explanation
+Variables assigned: list all variable names that got a value during the
+process.
+Each entry knows:
+ - #Asmt        how often has a value been assigned (setValue)
+ - #Adds        how often has the value been extended (addValue)
+(EOF)

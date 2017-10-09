@@ -1,0 +1,21 @@
+========================================================== Hookpoints
+Op    Type HP-/AHP Info
+========================================================== Explanation
+The events are the following:
+  - set         hook point assignment
+  - setr        template replacement by hook points
+  - setb        assignment of hook points that are called before the template 
+  - seta        assignment of hook points that are called after the template 
+  - call        hook point execution
+  - callr       execution of hook points that replaced a template
+  - callb       execution of hook points that are called before the template
+  - calla       execution of hook points that are called after the template
+Hookpoints: 
+  - SHP         StringHookPoint
+  - THP         TemplateHookPoint
+  - CHP         CodeHookPoint
+  - EHP         EmptyHookPoint = HookPoint is null
+  - ASHP        AST StringHookPoint
+  - ATHP        AST TemplateHookPoint
+  - ACHP        AST CodeHookPoint
+(EOF)

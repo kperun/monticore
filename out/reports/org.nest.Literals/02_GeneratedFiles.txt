@@ -1,0 +1,10 @@
+========================================================== Generated Files
+Filename                                AST-Node
+========================================================== Explanation
+Generated Files: the list of generated files in the order they are generated.
+Each file knows:
+- Template       responsible for the file creation
+- AST            Node which is passed to the template as ast variable
+- Model Position If the ast node is created as a direct result of parsing a model,
+                 the position of the model element is reported in the form <Line, Column>
+(EOF)

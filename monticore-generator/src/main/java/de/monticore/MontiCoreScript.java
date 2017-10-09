@@ -39,6 +39,7 @@ import com.google.common.io.Resources;
 
 import de.monticore.codegen.GeneratorHelper;
 import de.monticore.codegen.cd2java.ast.AstGenerator;
+import de.monticore.codegen.cd2python.ast.ASTPythonGenerator;
 import de.monticore.codegen.cd2java.ast.AstGeneratorHelper;
 import de.monticore.codegen.cd2java.ast.CdDecorator;
 import de.monticore.codegen.cd2java.ast_emf.CdEmfDecorator;
@@ -472,7 +473,7 @@ public class MontiCoreScript extends Script implements GroovyRunner {
   public void generate(GlobalExtensionManagement glex, GlobalScope globalScope,
       ASTCDCompilationUnit astClassDiagram, File outputDirectory, IterablePath templatePath) {
     boolean emfCompatible = false;
-    AstGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory, templatePath,
+    ASTPythonGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory, templatePath,
         emfCompatible);
     VisitorGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
     CoCoGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);

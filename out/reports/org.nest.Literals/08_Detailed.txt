@@ -1,0 +1,41 @@
+========================================================== Detailed Report
+warn       0xA1038 SymbolReference Could not load full information of 'de.monticore.literals.Literals' (Kind de.monticore.grammar.symboltable.MCGrammarSymbol$EssentialMCGrammarKind).
+warn       0xA1038 SymbolReference Could not load full information of 'de.monticore.literals.Literals' (Kind de.monticore.grammar.symboltable.MCGrammarSymbol$EssentialMCGrammarKind).
+err        An internal error occured.
+
+
+========================================================== Explanation
+
+A fine grained report of all the events happening. The events are the following:
+warn        issued warning
+err         issued error
+inst        instantiation
+setv        ... variable assignment
+addv        ... this is an extension (addValue), the extension is shown only
++file       generated file is opened
+-file       ... closed
++tpl        template called/included
+-tpl        ... ends
+set         hook point assignment
+setr        template replacement by hook points
+setb        assignment of hook points that are called before the template 
+seta        assignment of hook points that are called after the template 
+call        hook point execution
+callr       execution of hook points that replaced a template
+callb       execution of hook points that are called before the template
+calla       execution of hook points that are called after the template
+
+hook points are sepreated into
+* SHP       string hook point
+* THP       template hook point
+* CHP       code hook point
+* EHP       empty hook point
+* ASHP      AST string hook point
+* ATHP      AST template hook point
+* ACHP      AST code hook point
+
+for tpl events each line comes with
+* the shortname of the template
+* the AST it operates on
+* the current depth of the template hierarchy (xT)
+(EOF)

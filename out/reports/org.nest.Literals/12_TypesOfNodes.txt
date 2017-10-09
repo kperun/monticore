@@ -1,0 +1,14 @@
+======================================== Types of Nodes (all)
+#Objects  #Visits  Nonterminal-Name
+========================================================== Explanation
+Types of Nodes: Shows a List of all AST-Node-Types that occur in the final AST.
+Types of Nodes (with Source Position): Shows the subset of all AST Node Types
+which occurred in the initial AST after the parsing step.
+Types of Nodes (without Source Position): Shows the subset of all AST Node Types
+which have been added to the initial AST after the parsing step (e.g. by model
+transformation).
+For each AST type entry in the lists the following information is reported: 
+ - #Objects:  number of its instances of the corresponding AST type
+ - #Visits:   how often nodes of that type have been visited by a
+ call/includeTemplate
+(EOF)

@@ -1,0 +1,115 @@
+========================================================== Used Templates
+#Calls:   Template Name
+========================================================== Unused Templates
+ast/ASTConstantsClass.ftl
+ast/ASTNodeBase.ftl
+ast/AstBuilder.ftl
+ast/AstBuilderAttributeSetter.ftl
+ast/AstClass.ftl
+ast/AstEnum.ftl
+ast/AstExtendedInterfaces.ftl
+ast/AstImports.ftl
+ast/AstInterface.ftl
+ast/AstInterfaceContent.ftl
+ast/AstNodeFactory.ftl
+ast/AstSuperInterfaces.ftl
+ast/AstSuperTypes.ftl
+ast/Attribute.ftl
+ast/BuilderAttribute.ftl
+ast/BuilderConstructorParametersDeclaration.ftl
+ast/Class.ftl
+ast/ClassContent.ftl
+ast/ClassMethod.ftl
+ast/Constant.ftl
+ast/Constructor.ftl
+ast/ConstructorAttributesSetter.ftl
+ast/ConstructorParametersDeclaration.ftl
+ast/EmptyMethodBody.ftl
+ast/ErrorIfNull.ftl
+ast/Interface.ftl
+ast/ParametersDeclaration.ftl
+ast/additionalmethods/Accept.ftl
+ast/additionalmethods/AcceptSuper.ftl
+ast/additionalmethods/DeepCloneWithParameters.ftl
+ast/additionalmethods/DeepEqualsWithComments.ftl
+ast/additionalmethods/DeepEqualsWithOrder.ftl
+ast/additionalmethods/EqualAttributes.ftl
+ast/additionalmethods/EqualsWithComments.ftl
+ast/additionalmethods/Get.ftl
+ast/additionalmethods/GetChildren.ftl
+ast/additionalmethods/GetReferencedSymbol.ftl
+ast/additionalmethods/RemoveChild.ftl
+ast/additionalmethods/Set.ftl
+ast/factorymethods/Create.ftl
+ast/factorymethods/CreateDelegate.ftl
+ast/factorymethods/CreateWithParams.ftl
+ast/factorymethods/CreateWithParamsDelegate.ftl
+ast/factorymethods/DoCreate.ftl
+ast/factorymethods/DoCreateWithParams.ftl
+ast/factorymethods/ErrorIfNull.ftl
+ast_emf/AstEImports.ftl
+ast_emf/AstNodeFactory.ftl
+ast_emf/EConstantsEnum.ftl
+ast_emf/EFactory.ftl
+ast_emf/EPackage.ftl
+ast_emf/EPackageImpl.ftl
+ast_emf/additionalmethods/EGet.ftl
+ast_emf/additionalmethods/EIsSet.ftl
+ast_emf/additionalmethods/ESet.ftl
+ast_emf/additionalmethods/EStructuralFeature.ftl
+ast_emf/additionalmethods/EToString.ftl
+ast_emf/additionalmethods/EUnset.ftl
+ast_emf/additionalmethods/Set.ftl
+ast_emf/epackagemethods/CreatePackageContents.ftl
+ast_emf/epackagemethods/InitializePackageContents.ftl
+ast_python/AstClass.ftl
+ast_python/AstSuperClass.ftl
+ast_python/Attribute.ftl
+ast_python/ClassMethod.ftl
+ast_python/EmptyMethodBody.ftl
+ast_python/ErrorIfNone.ftl
+ast_python/Init.ftl
+cocos/CoCoChecker.ftl
+cocos/CoCoInterface.ftl
+de/monticore/generating/templateengine/freemarker/Aliases.ftl
+od/DiagramVisitor.ftl
+parser/LexerMember.ftl
+parser/MCParser.ftl
+parser/MCParserMethods.ftl
+parser/Parser.ftl
+parser/ParserHeader.ftl
+symboltable/ModelLoader.ftl
+symboltable/ModelNameCalculator.ftl
+symboltable/ModelingLanguage.ftl
+symboltable/ResolvingFilter.ftl
+symboltable/Scope.ftl
+symboltable/ScopeSpanningSymbol.ftl
+symboltable/Symbol.ftl
+symboltable/SymbolInterface.ftl
+symboltable/SymbolKind.ftl
+symboltable/SymbolReference.ftl
+symboltable/SymbolTableCreator.ftl
+symboltable/symbols/KindConstantDeclaration.ftl
+symboltable/symboltablecreators/EndVisitMethod.ftl
+symboltable/symboltablecreators/InitializeSymbol.ftl
+symboltable/symboltablecreators/ScopeMethods.ftl
+symboltable/symboltablecreators/ScopeSpanningSymbolMethods.ftl
+symboltable/symboltablecreators/SetEnclosingScopeOfNodes.ftl
+symboltable/symboltablecreators/SymbolMethods.ftl
+types/TypeResolver.ftl
+visitor/CommonDelegatorVisitor.ftl
+visitor/InheritanceVisitor.ftl
+visitor/ParentAwareVisitor.ftl
+visitor/SimpleVisitor.ftl
+========================================================== Used USTemplates
+#Calls:   Template Name
+========================================================== Unused USTemplates
+========================================================== Explanation
+Used Templates: the list of standard template being used.
+Used USTemplates: the list of user specifc templates being used.
+- #Executions: how often the template was called/included
+Unused Templates: the list of templates which have not been executed
+Unused USTemplates: the list of user specifc templates which
+                    have not been executed.
+All lists are sorted
+(EOF)

@@ -70,23 +70,27 @@ public class MontiCoreScriptTest {
   private static Set<String> additionalMethods = Sets.newLinkedHashSet();
   
   private static Path modelPathPath = Paths.get("src/test/resources");
+
+  private static Path modelPathPathToTest = Paths.get("src/test/resources/nestml");
   
   private static File outputPath = new File("target/generated-test-sources");
   
   private static ModelPath modelPath = new ModelPath(modelPathPath, outputPath.toPath());
-  
+
+  private static ModelPath alternative = new ModelPath(modelPathPathToTest, outputPath.toPath());
+
   private static IterablePath targetPath = IterablePath
       .from(new File("src/test/resources"), "java");
   
   private static IterablePath templatePath = IterablePath
       .from(new File("src/test/resources"), "ftl");
-  
+
   static String[] simpleArgs = { "-grammars",
       "src/test/resources/de/monticore/statechart/Statechart.mc4",
       "src/test/resources/mc/grammars/lexicals/TestLexicals.mc4",
       "-modelPath", modelPathPath.toAbsolutePath().toString(),
       "-out", outputPath.getAbsolutePath(), "-targetPath", "src/test/resources", "-force" };
-  
+
   @BeforeClass
   public static void setup() {
     Slf4jLog.init();
@@ -188,7 +192,19 @@ public class MontiCoreScriptTest {
     mc.storeInCdFile(cdCompilationUnit, outputPath);
     mc.generate(glex, symbolTable, cdCompilationUnit, outputPath, templatePath);
   }
-  
+
+  @Test
+  public void testPython(){
+    MontiCoreScript mc = new MontiCoreScript();
+    GlobalScope symbolTable = mc.initSymbolTable(alternative);
+    mc.createSymbolsFromAST(symbolTable, grammar);
+    cdCompilationUnit = mc.transformAstGrammarToAstCd(new GlobalExtensionManagement(),
+            grammar, symbolTable, targetPath);
+    mc.storeInCdFile(cdCompilationUnit, outputPath);
+    mc.generate(glex, symbolTable, cdCompilationUnit, outputPath, templatePath);
+  }
+
+
   /** {@link MontiCoreScript#run(MontiCoreConfiguration)} */
   @Test
   public void testDefaultScript() {    
