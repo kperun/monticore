@@ -77,3 +77,9 @@ class ${ast.getName()}(${genHelper.getSuperClassesAsString(ast)}):
     ${tc.includeArgs("ast_python.AstBuilder", [astBuilder.get(), ast])}
     </#if>
 
+    <#-- generate the setter and getter -->
+    <#list ast.getCDAttributes() as attribute>
+    <#if !genHelper.isInherited(attribute)>
+    ${tc.includeArgs("ast_python.GetterSetter", [attribute])}
+    </#if>
+    </#list>

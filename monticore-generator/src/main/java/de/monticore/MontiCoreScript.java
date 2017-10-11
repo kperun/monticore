@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import de.monticore.codegen.cd2python.ast.ast.AstPythonGenerator;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 
 import com.google.common.base.Joiner;
@@ -473,7 +474,7 @@ public class MontiCoreScript extends Script implements GroovyRunner {
   public void generate(GlobalExtensionManagement glex, GlobalScope globalScope,
       ASTCDCompilationUnit astClassDiagram, File outputDirectory, IterablePath templatePath) {
     boolean emfCompatible = false;
-    AstGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory, templatePath,
+    AstPythonGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory, templatePath,
         emfCompatible);
     PythonVisitorGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
     CoCoGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);

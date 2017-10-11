@@ -45,7 +45,7 @@ public class PythonVisitorGenerator {
         final Path simpleVisitorFilePath = Paths.get(path, visitorHelper.getVisitorType() + ".py");
         generator.generate("visitor_python.SimpleVisitor", simpleVisitorFilePath, astClassDiagram,
                 astClassDiagram.getCDDefinition(), astPackage, cd);
-        Log.trace(LOGGER_NAME, "Generated simple visitor for the diagram: " + diagramName);
+        Log.trace(LOGGER_NAME, "Generated simple python visitor for the diagram: " + diagramName);
     }
 
     private PythonVisitorGenerator() {

@@ -175,7 +175,7 @@ public class AstPythonGeneratorHelper extends GeneratorHelper {
             builder.append(printPrefixedNamed(attribute));
             builder.append((String)(" = "));
             builder.append((String)(" None"));
-            builder.append(",");
+            builder.append(", ");
         }
         if (astcdClass.getCDAttributes().size() > 0){
             // the last ',' is not required

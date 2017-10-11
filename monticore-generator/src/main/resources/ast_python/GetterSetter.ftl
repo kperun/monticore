@@ -30,26 +30,18 @@ negligence or otherwise) arising in any way out of the use of this
 software, even if advised of the possibility of such damage.
 ****************************************************************************
 -->
-<#--
-  Generates a Python init method
-  
-  @params    ASTCDClass     $ast
-  @result    
-
-  Python does not allow several init methods, thus we create a single one with default values.
--->
-${tc.signature("ast")}
 <#assign genHelper = glex.getGlobalVar("astHelper")>
-    def __init__(self<#if (genHelper.printInitParameters(ast)?length>0)>, </#if>  ${genHelper.printInitParameters(ast)}):
-        <#list genHelper.getSuperClasses(ast) as super>
-        ${super}.__init__()
-        </#list>
-        <#if ast.getCDAttributes()?size == 0>
-        pass
+${tc.signature("attribute")}
+    def get${genHelper.getPythonConformName(attribute.getName())}(<#if genHelper.isStaticAttribute(attribute)>cls<#else>self</#if>):
+        <#if genHelper.isStaticAttribute(attribute)>
+        return cls.${genHelper.getPythonConformName(attribute.getName())}
         <#else>
-            <#list ast.getCDAttributes() as attribute>
-                <#if !genHelper.isStaticAttribute(attribute)>
-        self.${genHelper.printModifier(attribute)}${genHelper.getPythonConformName(attribute.getName())} = ${genHelper.printPrefixedNamed(attribute)}
-                </#if>
-            </#list>
+        return self.${genHelper.getPythonConformName(attribute.getName())}
+        </#if>
+
+    def set${genHelper.getPythonConformName(attribute.getName())}(<#if genHelper.isStaticAttribute(attribute)>cls<#else>self</#if>,${genHelper.printPrefixedNamed(attribute)} = None):
+        <#if genHelper.isStaticAttribute(attribute)>
+        cls.${genHelper.printModifier(attribute)?cap_first}${genHelper.getPythonConformName(attribute.getName())} = ${genHelper.printPrefixedNamed(attribute)}
+        <#else>
+        self.${genHelper.printModifier(attribute)?cap_first}${genHelper.getPythonConformName(attribute.getName())} = ${genHelper.printPrefixedNamed(attribute)}
         </#if>

@@ -70,6 +70,12 @@ public class AstPythonGenerator {
                     Names.getSimpleName(enm.getName()) + PYTHON_EXTENSION);
             generator.generate("ast_python.AstEnum", filePath, enm);
         }
+        // the ast node is the superclass of all the classes
+        Path filePath = Paths.get(Names.getPathFromPackage(astPackage),
+                "ASTNode" + PYTHON_EXTENSION);
+        generator.generate("ast_python.misc.AstNode", filePath,
+                astClassDiagram.getCDDefinition().getCDEnums().get(0));// the last argument in order to meed the signature
+
 
     }
 
