@@ -39,7 +39,6 @@ import com.google.common.io.Resources;
 
 import de.monticore.codegen.GeneratorHelper;
 import de.monticore.codegen.cd2java.ast.AstGenerator;
-import de.monticore.codegen.cd2python.ast.ASTPythonGenerator;
 import de.monticore.codegen.cd2java.ast.AstGeneratorHelper;
 import de.monticore.codegen.cd2java.ast.CdDecorator;
 import de.monticore.codegen.cd2java.ast_emf.CdEmfDecorator;
@@ -47,6 +46,7 @@ import de.monticore.codegen.cd2java.cocos.CoCoGenerator;
 import de.monticore.codegen.cd2java.od.ODGenerator;
 import de.monticore.codegen.cd2java.types.TypeResolverGenerator;
 import de.monticore.codegen.cd2java.visitor.VisitorGenerator;
+import de.monticore.codegen.cd2python.ast.visitor.PythonVisitorGenerator;
 import de.monticore.codegen.mc2cd.MC2CDTransformation;
 import de.monticore.codegen.mc2cd.MCGrammarSymbolTableHelper;
 import de.monticore.codegen.parser.ParserGenerator;
@@ -473,9 +473,9 @@ public class MontiCoreScript extends Script implements GroovyRunner {
   public void generate(GlobalExtensionManagement glex, GlobalScope globalScope,
       ASTCDCompilationUnit astClassDiagram, File outputDirectory, IterablePath templatePath) {
     boolean emfCompatible = false;
-    ASTPythonGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory, templatePath,
+    AstGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory, templatePath,
         emfCompatible);
-    VisitorGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
+    PythonVisitorGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
     CoCoGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
     ODGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
   }

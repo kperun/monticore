@@ -1,4 +1,4 @@
-package de.monticore.codegen.cd2python.ast;
+package de.monticore.codegen.cd2python.ast.ast;
 
 import de.se_rwth.commons.JavaNamesHelper;
 
@@ -9,7 +9,7 @@ import java.util.Set;
 public class PythonNamesHelper {
     public static final String PREFIX_WHEN_WORD_IS_RESERVED = "r__";
 
-    public static String javaAttribute(String in) {
+    public static String pythonAttribute(String in) {
         if (in != null && in.length() > 0) {
             String out = (in.substring(0, 1).toLowerCase() + in.substring(1)).intern();
             return getNonReservedName(out);
@@ -43,7 +43,7 @@ public class PythonNamesHelper {
             if (name == null) {
                 return null;
             } else {
-                return goodNames.contains(name) ? ("r__" + name).intern() : name.intern();
+                return goodNames.contains(name) ? (PREFIX_WHEN_WORD_IS_RESERVED + name).intern() : name.intern();
             }
         }
     }

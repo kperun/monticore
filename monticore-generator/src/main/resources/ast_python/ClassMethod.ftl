@@ -41,7 +41,10 @@ software, even if advised of the possibility of such damage.
   <#assign genHelper = glex.getGlobalVar("astHelper")>
   <#if genHelper.isAbstract(ast, astType)>
   @abstractmethod </#if>
-  ${genHelper.printModifier(ast)}${ast.getName()}(${ast.printParametersDecl()})
+  def ${genHelper.printModifier(ast)}${ast.getName()}(${ast.printParametersDecl()}):
   <#if !genHelper.isAbstract(ast, astType)>
-     ${tc.include("ast.ErrorIfNull")}
-     ${tc.includeArgs("ast.EmptyMethodBody", [ast, astType])}
+    ${tc.include("ast.ErrorIfNull")}
+    ${tc.includeArgs("ast.EmptyMethodBody", [ast, astType])}
+  </#else>
+    pass
+  </#if>

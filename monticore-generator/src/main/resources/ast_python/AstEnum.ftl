@@ -31,14 +31,19 @@ software, even if advised of the possibility of such damage.
 ****************************************************************************
 -->
 <#--
-Generates a Python attribute
-
-@params    ASTCDAttribute     $ast
-@result
-
+  Generates a Java interface
+  
+  @params    ASTCDEnum $ast
+  @result    mc.javadsl.JavaDSL.CompilationUnit
+  
 -->
-${tc.signature("ast", "astType")}
 <#assign genHelper = glex.getGlobalVar("astHelper")>
-<#assign attributeName = genHelper.getPythonConformName(ast.getName())>
-<#assign attributeValue = genHelper.getAstAttributeValue(ast, astType)>
-    ${genHelper.printModifier(ast)}${attributeName}<#if attributeValue?has_content> = ${attributeValue}<#else> = None</#if>
+from enum import Enum <#-- in order to use enums in the code -->
+
+class ${ast.getName()}(Enum):
+    <#assign count = 0>
+    <#list ast.getCDEnumConstants() as constant>
+    ${constant.getName()} = ${count}
+    <#assign count = count + 1>
+    </#list>
+

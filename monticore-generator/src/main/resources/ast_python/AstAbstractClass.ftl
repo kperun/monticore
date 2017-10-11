@@ -38,42 +38,99 @@ software, even if advised of the possibility of such damage.
   @result    mc.javadsl.JavaDSL.CompilationUnit
 
 -->
-${tc.signature("ast", "astBuilder")}
+${tc.signature("visitorPackage", "visitorType")}
 <#assign genHelper = glex.getGlobalVar("astHelper")>
-<#if genHelper.classHasAbstracts(ast) >
-from abc import ABCMeta,abstractmethod
-</#if>
-<#list genHelper.getSuperClasses(ast) as toImport>
-from ${toImport} import ${toImport}
-</#list>
+from abc import ABCMeta, abstractmethod
 
-
-class ${ast.getName()}(${genHelper.getSuperClassesAsString(ast)}):
-    <#if genHelper.isAbstract(ast)>
+class ${ast.getName()}(object):
     """
-    This is an abstract class.
+    This is an abstract class aka. interface.
     """
     __metaclass__ = ABCMeta
-    </#if>
 
-    <#-- generate all attributes -->
-    <#list ast.getCDAttributes() as attribute>
-        <#if !genHelper.isInherited(attribute)>
-    ${tc.includeArgs("ast_python.Attribute", [attribute, ast])}
-        </#if>
-    </#list>
+    @abstractmethod
+    def deepClone():
+        """
+        :return a copy of self
+        :rtype ${ast.getName()}
+        """
+        pass
 
-    <#-- generate the init method -->
-    <#if !genHelper.isAbstract(ast) >
-    ${tc.includeArgs("ast_python.Init", [ast])}
-    </#if>
+    @abstractmethod
+    def equals(_o = None):
+        """
+        :param _o: an object
+        :type _o: object
+        :return True if equal, otherwise False.
+        :rtype bool
+        """
+        pass
+
+    @abstractmethod
+    def equalsWithComments(_o = None):
+        """
+        :param _o: an object
+        :type _o: object
+        :return True if equal, otherwise False.
+        :rtype bool
+        """
+        pass
+
+    @abstractmethod
+    def deepEquals(Object o):
+        """
+        :param _o: an object
+        :type _o: object
+        :return True if equal, otherwise False.
+        :rtype bool
+        """
+        pass
+
+    @abstractmethod
+    def deepEquals(_o = None, _forceSameOrder=False):
+        """
+        :param _o: an object
+        :type _o: object
+        :param _forceSameOrder: enforces the everything has to be in the same order
+        :type _forceSameOrder: bool
+        :return True if equal, otherwise False.
+        :rtype bool
+        """
+        pass
+
+    @abstractmethod
+    def deepEqualsWithComments(_o = None):
+        """
+        :param _o: an object
+        :type _o: object
+        :return True if equal, otherwise False.
+        :rtype bool
+        """
+        pass
+
+    @abstractmethod
+    def deepEqualsWithComments(_o = None, _forceSameOrder = None):
+        """
+        :param _o: an object
+        :type _o: object
+        :param _forceSameOrder: enforces the everything has to be in the same order
+        :type _forceSameOrder: bool
+        :return True if equal, otherwise False.
+        :rtype bool
+        """
+        pass
+
+    @abstractmethod
+    def accept(_visitor=None):
+        """
+        :param _visitor: a single visitor object
+        :type _visitor: ${visitorType}
+        """
+        pass
+
     <#-- generate all methods -->
     <#list ast.getCDMethods() as method>
     ${tc.includeArgs("ast_python.ClassMethod", [method, ast])}
     </#list>
 
-    # class content
-    <#if astBuilder.isPresent()>
-    ${tc.includeArgs("ast_python.AstBuilder", [astBuilder.get(), ast])}
-    </#if>
 

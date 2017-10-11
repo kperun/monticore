@@ -34,7 +34,7 @@ software, even if advised of the possibility of such damage.
 <#list ast.getCDParameters() as checkedParameter>
   <#assign type = checkedParameter.getType()>
   <#if genHelper.isNullable(type) && !genHelper.isOptional(type)>
-    assert (checkedParameter is not None),\
+    assert (${checkedParameter} is not None),\
         "0xA7006${genHelper.getGeneratedErrorCode(checkedParameter)} Parameter '${checkedParameter.getName()}' must not be null.")
   </#if> 
 </#list> 

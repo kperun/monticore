@@ -33,11 +33,30 @@ software, even if advised of the possibility of such damage.
 <#--
   Generates a Python init method
   
-  @params    ASTCDMethod     $ast
+  @params    ASTCDClass     $ast
   @result    
-  
+
+  Python does not allow several init methods, thus we create a single one with default values.
 -->
-  ${tc.signature("ast", "astType")}
-  <#assign genHelper = glex.getGlobalVar("astHelper")>
-  def __init__(${tc.include("ast.ParametersDeclaration"):
-  ${tc.includeArgs("ast.EmptyMethodBody", [ast, astType])}
+${tc.signature("ast")}
+<#assign genHelper = glex.getGlobalVar("astHelper")>
+    def __init__(${genHelper.printInitParameters(ast)}):
+        <#-- generate the expected parameter types -->
+        <#list ast.getCDAttributes() as attribute>
+            <#if !genHelper.isStaticAttribute(attribute)>
+        :param ${genHelper.printPrefixedNamed(attribute)}:
+        :type ${genHelper.printPrefixedNamed(attribute)}:
+            </#if>
+        </#list>
+        <#if (genHelper.getSuperClasses(ast)?size  > 0) >
+        super(${ast.getName()}, self).__init__()
+        </#if>
+        <#if ast.getCDAttributes()?size == 0>
+        pass
+        <#else>
+            <#list ast.getCDAttributes() as attribute>
+                <#if !genHelper.isStaticAttribute(attribute)>
+        self.${genHelper.printModifier(attribute)}${genHelper.getPythonConformName(attribute.getName())} = ${genHelper.printPrefixedNamed(attribute)}
+                </#if>
+            </#list>
+        </#if>

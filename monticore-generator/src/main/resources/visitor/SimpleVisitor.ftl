@@ -133,11 +133,11 @@ public interface ${genHelper.getVisitorType()} ${genHelper.getVisitorSuperInterf
       default public void handle(${astName} node) {
         getRealThis().visit(node);
         <#if type.isInterface() || type.isEnum()>
-        // no traverse() for interfaces and enums, only concrete classes are traversed
+        # no traverse() for interfaces and enums, only concrete classes are traversed
         <#elseif type.isAbstract() >
-          // no traverse() for abstract classes, only concrete subtypes are traversed
+        # no traverse() for abstract classes, only concrete subtypes are traversed
         <#else>
-          getRealThis().traverse(node);
+        getRealThis().traverse(node);
         </#if>
         getRealThis().endVisit(node);
       }
@@ -159,7 +159,7 @@ public interface ${genHelper.getVisitorType()} ${genHelper.getVisitorSuperInterf
                   node.${attrGetter}().get().accept(getRealThis());
                 }
               <#else>
-                if (null != node.${attrGetter}()) {          
+                if (null != node.${attrGetter}()) {
                   node.${attrGetter}().accept(getRealThis());
                 }
               </#if>

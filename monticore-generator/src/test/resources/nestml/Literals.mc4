@@ -3,12 +3,12 @@
  *
  * http://www.se-rwth.de/
  */
-package org.nest;
+package nestml;
 
 /**
   Grammar representing ODE expressions.
 */
-component grammar Literals extends de.monticore.literals.Literals {
+component grammar Literals extends mc.grammar.literals.Literals {
 
   /*********************************************************************************************************************
   * Commons-Grammar fragment

@@ -1,10 +1,7 @@
-package de.monticore.codegen.cd2python.ast;
+package de.monticore.codegen.cd2python.ast.ast;
 
-import de.monticore.codegen.GeneratorHelper;
 import de.monticore.codegen.cd2java.ast.AstGeneratorHelper;
 import de.monticore.codegen.cd2java.visitor.VisitorGeneratorHelper;
-import de.monticore.codegen.cd2python.ast.AstPythonGeneratorHelper;
-import de.monticore.codegen.cd2java.ast.AstGeneratorHelper;
 import de.monticore.generating.GeneratorEngine;
 import de.monticore.generating.GeneratorSetup;
 import de.monticore.generating.templateengine.GlobalExtensionManagement;
@@ -12,6 +9,8 @@ import de.monticore.io.paths.IterablePath;
 import de.monticore.symboltable.GlobalScope;
 import de.monticore.umlcd4a.cd4analysis._ast.ASTCDClass;
 import de.monticore.umlcd4a.cd4analysis._ast.ASTCDCompilationUnit;
+import de.monticore.umlcd4a.cd4analysis._ast.ASTCDEnum;
+import de.monticore.umlcd4a.cd4analysis._ast.ASTCDInterface;
 import de.se_rwth.commons.Names;
 
 import java.io.File;
@@ -19,7 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
-public class ASTPythonGenerator {
+public class AstPythonGenerator {
 
     private static final String PYTHON_EXTENSION = ".py";
 
@@ -56,27 +55,25 @@ public class ASTPythonGenerator {
                 generator.generate("ast_python.AstClass", filePath, clazz, clazz, astHelper.getASTBuilder(clazz));
             }
             else if (!AstGeneratorHelper.isBuilderClass(clazz)) {
-                generator.generate("ast.Class", filePath, clazz);
+                generator.generate("ast.Class", filePath, clazz);//TODO
             }
         }
-        /*
+        //interfaces are per-se not a part of python contract system, and are therefore implemented as abstract classes
         for (ASTCDInterface interf : astClassDiagram.getCDDefinition().getCDInterfaces()) {
             final Path filePath = Paths.get(Names.getPathFromPackage(astPackage),
                     Names.getSimpleName(interf.getName()) + PYTHON_EXTENSION);
-            generator.generate("ast.AstInterface", filePath, interf, visitorPackage,
+            generator.generate("ast_python.AstAbstractClass", filePath, interf, visitorPackage,
                     VisitorGeneratorHelper.getVisitorType(diagramName));
         }
-
         for (ASTCDEnum enm : astClassDiagram.getCDDefinition().getCDEnums()) {
             final Path filePath = Paths.get(Names.getPathFromPackage(astPackage),
                     Names.getSimpleName(enm.getName()) + PYTHON_EXTENSION);
-            generator.generate("ast.AstEnum", filePath, enm);
+            generator.generate("ast_python.AstEnum", filePath, enm);
         }
-        */
 
     }
 
-    private ASTPythonGenerator() {
+    private AstPythonGenerator() {
         // noninstantiable
     }
 

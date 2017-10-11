@@ -31,13 +31,14 @@ software, even if advised of the possibility of such damage.
 ****************************************************************************
 -->
 <#--
-  Generates standard os specialized inheritance
+  Generates a list of parameters for methods
 
-  @params    ASTCDClass $ast
-             ASTCDClass $astBuilder
-  @result    mc.javadsl.JavaDSL.CompilationUnit
+  @params    ASTCDMethod     $ast
+  @result
+
 -->
 <#compress>
+${tc.signature("ast", "astType")}
 <#assign genHelper = glex.getGlobalVar("astHelper")>
-<#if genHelper.getSuperClass(ast)??>${genHelper.getSuperClass(ast)}<#else>object</#if>
+${genHelper.printParametersDeclaration(ast)}
 </#compress>
