@@ -2,6 +2,7 @@ package de.monticore.codegen.cd2python.ast.visitor;
 
 import de.monticore.codegen.cd2java.ast.AstGeneratorHelper;
 import de.monticore.codegen.cd2java.visitor.VisitorGeneratorHelper;
+import de.monticore.codegen.cd2python.ast.visitor.PythonVisitorGeneratorHelper;
 import de.monticore.generating.GeneratorEngine;
 import de.monticore.generating.GeneratorSetup;
 import de.monticore.generating.templateengine.GlobalExtensionManagement;
@@ -29,6 +30,7 @@ public class PythonVisitorGenerator {
         final GeneratorSetup setup = new GeneratorSetup(outputDirectory);
         VisitorGeneratorHelper visitorHelper = new VisitorGeneratorHelper(astClassDiagram, globalScope);
         glex.setGlobalValue("visitorHelper", visitorHelper);
+        glex.setGlobalValue("pythonVisitorHelper",new PythonVisitorGeneratorHelper());
         setup.setGlex(glex);
         setup.setTracing(false);//we need to deactivate it since python is syntax sensitive
         final GeneratorEngine generator = new GeneratorEngine(setup);
@@ -45,6 +47,11 @@ public class PythonVisitorGenerator {
         final Path simpleVisitorFilePath = Paths.get(path, visitorHelper.getVisitorType() + ".py");
         generator.generate("visitor_python.SimpleVisitor", simpleVisitorFilePath, astClassDiagram,
                 astClassDiagram.getCDDefinition(), astPackage, cd);
+        // and the ast builder
+        final Path astBuilderVisitorFilePath = Paths.get(path, "AstBuilderVisitor" + ".py");
+        generator.generate("visitor_python.AstBuilderVisitor", astBuilderVisitorFilePath , astClassDiagram,
+                astClassDiagram.getCDDefinition(), astPackage, cd);
+
         Log.trace(LOGGER_NAME, "Generated simple python visitor for the diagram: " + diagramName);
     }
 

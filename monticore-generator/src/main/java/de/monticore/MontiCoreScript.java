@@ -477,8 +477,8 @@ public class MontiCoreScript extends Script implements GroovyRunner {
     AstPythonGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory, templatePath,
         emfCompatible);
     PythonVisitorGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
-    CoCoGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
-    ODGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
+    //CoGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
+    //DGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
   }
   
   /**

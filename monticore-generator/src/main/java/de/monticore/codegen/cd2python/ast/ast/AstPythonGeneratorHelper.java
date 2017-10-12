@@ -73,32 +73,27 @@ public class AstPythonGeneratorHelper extends GeneratorHelper {
     @SuppressWarnings("unused")//used in the template
     public String getSuperClassesAsString(ASTCDClass astcdClass){
         StringBuilder builder = new StringBuilder();
+        //AstNode is always a superclass of each node
+        builder.append("AstNode");
+        builder.append(",");
         if (astcdClass.getSuperclass().isPresent()){
             builder.append(astcdClass.getSuperclass().get().toString());
             builder.append(',');
         }
-        if(builder.length() > 0){
-            builder.deleteCharAt(builder.length()-1);
-            return builder.toString();
-        }
-        else{
-            return super.getASTNodeBaseType();
-        }
+        builder.append(super.getASTNodeBaseType());
+        return builder.toString();
     }
 
     @SuppressWarnings("unused")//used in the template
     public List<String> getSuperClasses(ASTCDClass astcdClass){
         List<String> ret = new ArrayList<>();
+        //AstNode is always a superclass of each node
+        ret.add("AstNode");
         if (astcdClass.getSuperclass().isPresent()){
             ret.add(astcdClass.getSuperclass().get().toString());
         }
-        if(ret.size() > 0){
-            return ret;
-        }
-        else{
-            ret.add(super.getASTNodeBaseType());
-            return ret;
-        }
+        ret.add(super.getASTNodeBaseType());
+        return ret;
     }
 
 
@@ -177,9 +172,9 @@ public class AstPythonGeneratorHelper extends GeneratorHelper {
             builder.append((String)(" None"));
             builder.append(", ");
         }
-        if (astcdClass.getCDAttributes().size() > 0){
+        if (builder.length() > 0){
             // the last ',' is not required
-            builder.deleteCharAt(builder.length()-1);
+            builder.setLength(builder.length()-2);
         }
         return builder.toString();
     }

@@ -75,6 +75,21 @@ public class AstPythonGenerator {
                 "ASTNode" + PYTHON_EXTENSION);
         generator.generate("ast_python.misc.AstNode", filePath,
                 astClassDiagram.getCDDefinition().getCDEnums().get(0));// the last argument in order to meed the signature
+        //generate the comment and source position classes
+        filePath = Paths.get(Names.getPathFromPackage(astPackage),
+                "Comment" + PYTHON_EXTENSION);
+        generator.generate("ast_python.misc.Comment", filePath,
+                astClassDiagram.getCDDefinition().getCDEnums().get(0));// the last argument in order to meed the signature
+        filePath = Paths.get(Names.getPathFromPackage(astPackage),
+                "SourcePosition" + PYTHON_EXTENSION);
+        generator.generate("ast_python.misc.SourcePosition", filePath,
+                astClassDiagram.getCDDefinition().getCDEnums().get(0));// the last argument in order to meed the signature
+        //generate the parser module
+        filePath = Paths.get(Names.getPathFromPackage(astPackage),
+                "Parser" + PYTHON_EXTENSION);
+        String name = astClassDiagram.getCDDefinition().getName();
+        generator.generate("ast_python.misc.Parser", filePath,
+                astClassDiagram.getCDDefinition().getCDEnums().get(0),name);
 
 
     }
