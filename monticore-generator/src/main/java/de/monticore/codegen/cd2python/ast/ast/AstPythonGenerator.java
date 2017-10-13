@@ -1,7 +1,8 @@
 package de.monticore.codegen.cd2python.ast.ast;
 
-import de.monticore.codegen.cd2java.ast.AstGeneratorHelper;
 import de.monticore.codegen.cd2java.visitor.VisitorGeneratorHelper;
+import de.monticore.codegen.cd2python.ast.ast.PythonCdDecorator;
+import de.monticore.codegen.cd2python.ast.visitor.PythonVisitorGenerator;
 import de.monticore.generating.GeneratorEngine;
 import de.monticore.generating.GeneratorSetup;
 import de.monticore.generating.templateengine.GlobalExtensionManagement;
@@ -39,9 +40,10 @@ public class AstPythonGenerator {
         AstPythonGeneratorHelper astHelper = new AstPythonGeneratorHelper(astClassDiagram, globalScope);
         glex.setGlobalValue("astHelper", astHelper);
         glex.setGlobalValue("pythonNameHelper", new PythonNamesHelper());
+
         setup.setGlex(glex);
         // we deactivate tracing in order to preserve the sensitive syntax of python
-        setup.setTracing(false);
+        setup.setTracing(true);
 
         final GeneratorEngine generator = new GeneratorEngine(setup);
         final String astPackage = astHelper.getAstPackage();
@@ -54,9 +56,10 @@ public class AstPythonGenerator {
             if (astHelper.isAstClass(clazz)) {
                 generator.generate("ast_python.AstClass", filePath, clazz, clazz, astHelper.getASTBuilder(clazz));
             }
+            /*
             else if (!AstGeneratorHelper.isBuilderClass(clazz)) {
                 generator.generate("ast.Class", filePath, clazz);//TODO
-            }
+            }*/
         }
         //interfaces are per-se not a part of python contract system, and are therefore implemented as abstract classes
         for (ASTCDInterface interf : astClassDiagram.getCDDefinition().getCDInterfaces()) {

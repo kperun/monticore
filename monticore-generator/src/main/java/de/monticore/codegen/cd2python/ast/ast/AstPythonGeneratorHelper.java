@@ -1,6 +1,7 @@
 package de.monticore.codegen.cd2python.ast.ast;
 
 import de.monticore.codegen.GeneratorHelper;
+import de.monticore.codegen.cd2java.ast_emf.AstEmfGeneratorHelper;
 import de.monticore.symboltable.GlobalScope;
 import de.monticore.types.TypesPrinter;
 import de.monticore.types.types._ast.ASTReferenceType;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AstPythonGeneratorHelper extends GeneratorHelper {
+public class AstPythonGeneratorHelper extends AstEmfGeneratorHelper {
 
     protected static final String AST_BUILDER = "Builder_";
     public static final String PARAMETER_PREFIX = "_";
@@ -122,6 +123,16 @@ public class AstPythonGeneratorHelper extends GeneratorHelper {
         }
     }
 
+    public static String printModifier(ASTCDMethod astcdMethod){
+        if(astcdMethod.getModifier().isPrivate()){
+            return "__";
+        }
+        else{
+            return "";
+        }
+    }
+
+
     /**
      * Indicates whether a handed over class uses abstract methods or not.
      * @param astcdClass a single class
@@ -193,7 +204,6 @@ public class AstPythonGeneratorHelper extends GeneratorHelper {
     public static String printPrefixedNamed(ASTCDParameter astcdParameter){
         return PARAMETER_PREFIX + astcdParameter.getName();
     }
-
 
 }
 

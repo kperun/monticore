@@ -77,7 +77,7 @@ class AstBuilderVisitor(ParseTreeVisitor):
             _${field.getName()} = self.visit(ctx.${field.getName()})
                 <#else>
         if callable(ctx.${field.getName()}):
-            _${field.getName()} = ctx.${field.getName()}()) if ctx.${field.getName()}() is not None else None
+            _${field.getName()} = ctx.${field.getName()}() if ctx.${field.getName()}() is not None else None
         else:
             _${field.getName()} = ctx.${field.getName()}
                 </#if>

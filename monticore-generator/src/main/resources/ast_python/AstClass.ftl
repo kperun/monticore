@@ -74,7 +74,7 @@ class ${ast.getName()}(${genHelper.getSuperClassesAsString(ast)}):
 
     # class content
     <#if astBuilder.isPresent()>
-    ${tc.includeArgs("ast_python.AstBuilder", [astBuilder.get(), ast])}
+    <#-- ${tc.includeArgs("ast_python.AstBuilder", [astBuilder.get(), ast])}--> #todo
     </#if>
 
     <#-- generate the setter and getter -->

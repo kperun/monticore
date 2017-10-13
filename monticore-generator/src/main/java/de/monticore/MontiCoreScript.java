@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import de.monticore.codegen.cd2python.ast.ast.AstPythonGenerator;
+import de.monticore.codegen.cd2python.ast.ast.PythonCdDecorator;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 
 import com.google.common.base.Joiner;
@@ -492,8 +493,10 @@ public class MontiCoreScript extends Script implements GroovyRunner {
    */
   public void decorateEmfCd(GlobalExtensionManagement glex,
       ASTCDCompilationUnit astClassDiagram, GlobalScope symbolTable, IterablePath targetPath) {
+    createPythonCdDecorator(glex, symbolTable, targetPath).decorate(astClassDiagram);
+    /*
     boolean emfCompatible = true;
-    createCdDecorator(glex, symbolTable, targetPath, emfCompatible).decorate(astClassDiagram);
+    createCdDecorator(glex, symbolTable, targetPath, emfCompatible).decorate(astClassDiagram);*/
   }
   
   /**
@@ -506,14 +509,30 @@ public class MontiCoreScript extends Script implements GroovyRunner {
    */
   public void generateEmfCompatible(GlobalExtensionManagement glex, GlobalScope globalScope,
       ASTCDCompilationUnit astClassDiagram, File outputDirectory, IterablePath templatePath) {
-    boolean emfCompatible = true;
+    generatePython(glex,globalScope,astClassDiagram,outputDirectory,templatePath);
+    /*boolean emfCompatible = true;
     AstGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory, templatePath,
         emfCompatible);
     VisitorGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
     CoCoGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
-    ODGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
+    ODGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);*/
   }
-  
+
+  public void decoratePythonCd(GlobalExtensionManagement glex,
+                               ASTCDCompilationUnit astClassDiagram, GlobalScope symbolTable, IterablePath targetPath){
+    boolean emfCompatible = false;
+    createPythonCdDecorator(glex, symbolTable, targetPath).decorate(astClassDiagram);
+  }
+
+  public void generatePython(GlobalExtensionManagement glex, GlobalScope globalScope,
+                             ASTCDCompilationUnit astClassDiagram, File outputDirectory, IterablePath templatePath){
+    boolean emfCompatible = false;
+    AstPythonGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory, templatePath,
+            emfCompatible);
+    PythonVisitorGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
+  }
+
+
   /**
    * Creates instance of the {@link CdDecorator} 
    * 
@@ -530,7 +549,20 @@ public class MontiCoreScript extends Script implements GroovyRunner {
     }
     return new CdDecorator(glex, symbolTable, targetPath);
   }
-  
+
+  /**
+   * Creates an instance of the {@link PythonCdDecorator}
+   * @param glex
+   * @param symbolTable
+   * @param targetPath
+   * @return
+   */
+  private PythonCdDecorator createPythonCdDecorator(GlobalExtensionManagement glex, GlobalScope symbolTable,
+                                                    IterablePath targetPath){
+    return new PythonCdDecorator(glex, symbolTable, targetPath);
+  }
+
+
   // #######################
   // log functions
   // #######################

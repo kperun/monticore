@@ -71,7 +71,7 @@ public class MontiCoreScriptTest {
   
   private static Path modelPathPath = Paths.get("src/test/resources");
 
-  private static Path modelPathPathToTest = Paths.get("src/test/resources/nestml");
+  private static Path modelPathPathToTest = Paths.get("src/test/resources/de/monticore/NESTML.mc4");
   
   private static File outputPath = new File("target/generated-test-sources");
   
