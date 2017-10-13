@@ -205,6 +205,21 @@ public class AstPythonGeneratorHelper extends AstEmfGeneratorHelper {
         return PARAMETER_PREFIX + astcdParameter.getName();
     }
 
+    public static boolean hasBooleanReturn(ASTCDMethod astcdMethod){
+        String tmp = astcdMethod.getReturnType().getSymbol().get().getName();
+        return astcdMethod.getReturnType().getSymbol().isPresent() && astcdMethod.getReturnType().getSymbol().get().getName().equals("boolean");
+    }
+
+    public static boolean hasParameters(ASTCDMethod astcdMethod){
+        return astcdMethod.getCDParameters().size() > 0;
+    }
+
+    public static boolean isStaticMethod(ASTCDMethod astcdMethod){
+        return astcdMethod.getModifier().isStatic();
+    }
+
+
 }
+
 
 

@@ -43,7 +43,7 @@ public class AstPythonGenerator {
 
         setup.setGlex(glex);
         // we deactivate tracing in order to preserve the sensitive syntax of python
-        setup.setTracing(true);
+        setup.setTracing(false);
 
         final GeneratorEngine generator = new GeneratorEngine(setup);
         final String astPackage = astHelper.getAstPackage();
@@ -76,22 +76,22 @@ public class AstPythonGenerator {
         // the ast node is the superclass of all the classes
         Path filePath = Paths.get(Names.getPathFromPackage(astPackage),
                 "ASTNode" + PYTHON_EXTENSION);
-        generator.generate("ast_python.misc.AstNode", filePath,
+        generator.generate("ast_python.addtionalclasses.AstNode", filePath,
                 astClassDiagram.getCDDefinition().getCDEnums().get(0));// the last argument in order to meed the signature
         //generate the comment and source position classes
         filePath = Paths.get(Names.getPathFromPackage(astPackage),
                 "Comment" + PYTHON_EXTENSION);
-        generator.generate("ast_python.misc.Comment", filePath,
+        generator.generate("ast_python.addtionalclasses.Comment", filePath,
                 astClassDiagram.getCDDefinition().getCDEnums().get(0));// the last argument in order to meed the signature
         filePath = Paths.get(Names.getPathFromPackage(astPackage),
                 "SourcePosition" + PYTHON_EXTENSION);
-        generator.generate("ast_python.misc.SourcePosition", filePath,
+        generator.generate("ast_python.addtionalclasses.SourcePosition", filePath,
                 astClassDiagram.getCDDefinition().getCDEnums().get(0));// the last argument in order to meed the signature
         //generate the parser module
         filePath = Paths.get(Names.getPathFromPackage(astPackage),
                 "Parser" + PYTHON_EXTENSION);
         String name = astClassDiagram.getCDDefinition().getName();
-        generator.generate("ast_python.misc.Parser", filePath,
+        generator.generate("ast_python.addtionalclasses.Parser", filePath,
                 astClassDiagram.getCDDefinition().getCDEnums().get(0),name);
 
 
