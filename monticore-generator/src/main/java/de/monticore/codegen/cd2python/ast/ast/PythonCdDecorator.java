@@ -140,27 +140,20 @@ public class PythonCdDecorator extends CdDecorator{
         }
 
         replaceMethodBodyTemplate(clazz, AstAdditionalMethods.deepEqualsWithOrder.getDeclaration(),
-                new TemplateHookPoint("ast.additionalmethods.DeepEqualsWithOrder"));
-
-        replaceMethodBodyTemplate(clazz, AstAdditionalMethods.deepEquals.getDeclaration(),
-                new StringHookPoint("return deepEquals(o, true);\n"));
+                new TemplateHookPoint("ast_python.additionalmethods.DeepEqualsWithOrder"));
 
         replaceMethodBodyTemplate(clazz,
                 AstAdditionalMethods.deepEqualsWithCommentsWithOrder.getDeclaration(),
-                new TemplateHookPoint("ast.additionalmethods.DeepEqualsWithComments"));
-
-        replaceMethodBodyTemplate(clazz,
-                AstAdditionalMethods.deepEqualsWithComments.getDeclaration(),
-                new StringHookPoint("return deepEqualsWithComments(o, true);\n"));
+                new TemplateHookPoint("ast_python.additionalmethods.DeepEqualsWithComments"));
 
         replaceMethodBodyTemplate(clazz, AstAdditionalMethods.equalAttributes.getDeclaration(),
-                new TemplateHookPoint("ast.additionalmethods.EqualAttributes"));
+                new TemplateHookPoint("ast_python.additionalmethods.EqualAttributes"));
 
         replaceMethodBodyTemplate(clazz, AstAdditionalMethods.equalsWithComments.getDeclaration(),
-                new TemplateHookPoint("ast.additionalmethods.EqualsWithComments"));
+                new TemplateHookPoint("ast_python.additionalmethods.EqualsWithComments"));
 
         replaceMethodBodyTemplate(clazz, AstAdditionalMethods.get_Children.getDeclaration(),
-                new TemplateHookPoint("ast.additionalmethods.GetChildren", clazz, symbol.get()));
+                new TemplateHookPoint("ast_python.additionalmethods.GetChildren", clazz, symbol.get()));
 
         replaceMethodBodyTemplate(clazz, AstAdditionalMethods.remove_Child.getDeclaration(),
                 new TemplateHookPoint("ast_python.additionalmethods.RemoveChild", clazz, symbol.get()));
@@ -171,24 +164,8 @@ public class PythonCdDecorator extends CdDecorator{
         String stringToParse = String.format(AstAdditionalMethods.deepClone.getDeclaration(),
                 plainClassName);
         replaceMethodBodyTemplate(clazz, stringToParse,
-                new StringHookPoint("return deepClone(_construct());\n"));
+                new TemplateHookPoint("ast_python.additionalmethods.DeepCloneWithParameters"));
 
-        stringToParse = String.format(AstAdditionalMethods.deepCloneWithOrder.getDeclaration(),
-                plainClassName, plainClassName);
-        replaceMethodBodyTemplate(clazz, stringToParse,
-                new TemplateHookPoint("ast.additionalmethods.DeepCloneWithParameters"));
-
-        if (modifier.isPresent() && modifier.get().isAbstract()) {
-            stringToParse = String.format(AstAdditionalMethods._construct.getDeclaration(), "abstract "
-                    + plainClassName);
-            cdTransformation.addCdMethodUsingDefinition(clazz, stringToParse);
-        }
-        else {
-            stringToParse = String.format(AstAdditionalMethods._construct.getDeclaration(),
-                    plainClassName);
-            replaceMethodBodyTemplate(clazz, stringToParse,
-                    new StringHookPoint("return new " + plainClassName + "();\n"));
-        }
     }
 
 }

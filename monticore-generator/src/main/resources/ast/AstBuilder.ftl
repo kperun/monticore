@@ -44,7 +44,7 @@ ${tc.signature("ast", "astType")}
     <#if astType.getModifier().isPresent() && !astType.getModifier().get().isAbstract()>
     <#assign typeName = genHelper.getPlainName(astType)>
     public ${typeName} build() {
-      return new ${typeName} (${tc.include("ast.ParametersDeclaration", ast)}
+      return new ${typeName} (${ genHelper.printInitParameters(ast)})
       );
     }
     ${tc.include("ast.AstBuilderAttributeSetter", genHelper.getNativeCDAttributes(astType))}

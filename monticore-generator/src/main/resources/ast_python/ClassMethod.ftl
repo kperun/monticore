@@ -44,7 +44,7 @@ software, even if advised of the possibility of such damage.
     @abstractmethod </#if>
     def ${genHelper.printModifier(ast)}${ast.getName()}(<#if genHelper.isStaticMethod(ast)>cls<#else>self</#if><#if genHelper.hasParameters(ast)>, </#if>${genHelper.printParametersDeclaration(ast)}):
     <#if !genHelper.isAbstract(ast, astType)>
-        ${tc.include("ast_python.ErrorIfNone")}
+        <#--${tc.include("ast_python.ErrorIfNone")}-->
         ${tc.includeArgs("ast.EmptyMethodBody", [ast, astType])}
     <#else>
         pass

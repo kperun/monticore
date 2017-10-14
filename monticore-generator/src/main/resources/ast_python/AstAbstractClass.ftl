@@ -78,32 +78,12 @@ class ${ast.getName()}(object):
         pass
 
     @abstractmethod
-    def deepEquals(Object o):
-        """
-        :param _o: an object
-        :type _o: object
-        :return True if equal, otherwise False.
-        :rtype bool
-        """
-        pass
-
-    @abstractmethod
     def deepEquals(_o = None, _forceSameOrder=False):
         """
         :param _o: an object
         :type _o: object
         :param _forceSameOrder: enforces the everything has to be in the same order
         :type _forceSameOrder: bool
-        :return True if equal, otherwise False.
-        :rtype bool
-        """
-        pass
-
-    @abstractmethod
-    def deepEqualsWithComments(_o = None):
-        """
-        :param _o: an object
-        :type _o: object
         :return True if equal, otherwise False.
         :rtype bool
         """

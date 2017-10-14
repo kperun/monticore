@@ -35,7 +35,7 @@ software, even if advised of the possibility of such damage.
 
   @params    ASTCDClass $ast
              ASTCDClass $astBuilder
-  @result    mc.javadsl.JavaDSL.CompilationUnit
+  @result    Python class
 
 -->
 ${tc.signature("ast", "astBuilder")}
@@ -74,5 +74,5 @@ class ${ast.getName()}(${genHelper.getSuperClassesAsString(ast)}):
 
     # class content
     <#if astBuilder.isPresent()>
-    <#-- ${tc.includeArgs("ast_python.AstBuilder", [astBuilder.get(), ast])}--> #todo
+    <#--${tc.includeArgs("ast_python.AstBuilder", [astBuilder.get(), ast])} -->TODO
     </#if>

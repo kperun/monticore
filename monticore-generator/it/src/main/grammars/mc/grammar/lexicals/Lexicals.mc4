@@ -17,7 +17,7 @@
  * ******************************************************************************
  */
 
-package mc.grammar.lexicals;
+package de.monticore.lexicals;
 
 component grammar Lexicals {
  

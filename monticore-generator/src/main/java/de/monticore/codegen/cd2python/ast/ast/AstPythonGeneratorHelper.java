@@ -115,8 +115,9 @@ public class AstPythonGeneratorHelper extends AstEmfGeneratorHelper {
      */
     @SuppressWarnings("unused")//used in the template
     public static String printModifier(ASTCDAttribute astcdAttribute){
+        //TODO: there are no real privates or publics, but only conventions. indicate those
         if(astcdAttribute.getModifier().isPresent() && astcdAttribute.getModifier().get().isPrivate()){
-            return "__";
+            return "";
         }
         else{
             return "";
