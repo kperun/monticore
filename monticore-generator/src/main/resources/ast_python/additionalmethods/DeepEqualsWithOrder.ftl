@@ -37,8 +37,8 @@ ${tc.signature("ast","astType")}
         return instanceof(_o, ${astName})
     <#else>
         comp = None
-        if isinstanceof(_o, ${astName}):
-            comp = _o;
+        if isinstance(_o, ${astName}):
+            comp = _o
         else:
             return False
         if not self.equalAttributes(comp):
@@ -47,7 +47,7 @@ ${tc.signature("ast","astType")}
         <#assign attrName = genHelper.getJavaConformName(attribute.getName())>
             <#if genHelper.isOptionalAstNode(attribute)>
         # comparing ${attrName}
-        if (self.${attrName}.is not None == comp.${attrName} is not None) or\
+        if (self.${attrName} is not None == comp.${attrName} is not None) or\
             (self.${attrName} is not None and not self.${attrName}.deepEquals(comp.${attrName})):
             return False
 
@@ -65,15 +65,15 @@ ${tc.signature("ast","astType")}
         <#assign astChildTypeName = genHelper.getAstClassNameForASTLists(attribute)>
             if _forceSameOrder:
                 for i in range(0,len(self.${attrName})):
-                    if not self.${attrName}[i].deepEquals(comp.${attrName}[i])
+                    if not self.${attrName}[i].deepEquals(comp.${attrName}[i]):
                         return False
             else:
-                for elemThis in this.${attrName}:
+                for elemThis in self.${attrName}:
                     matchFound = False
                     for elemThat in comp.${attrName}:
-                    if elemThis.deepEquals(elemThat):
-                        matchFound = True
-                        break
+                        if elemThis.deepEquals(elemThat):
+                            matchFound = True
+                            break
                     if not matchFound:
                         return False
         </#if>

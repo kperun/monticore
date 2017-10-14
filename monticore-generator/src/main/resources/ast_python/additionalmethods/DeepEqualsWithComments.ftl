@@ -34,10 +34,10 @@ ${tc.signature("ast","astType")}
    <#assign genHelper = glex.getGlobalVar("astHelper")>
    <#assign astName = genHelper.getPlainName(astType)>
    <#if astType.getCDAttributes()?size == 0>
-        return instanceof(_o, ${astName})
+        return isinstance(_o, ${astName})
    <#else>
         comp = None
-        if isinstanceof(_o,${astName}):
+        if isinstance(_o,${astName}):
             comp = _o
         else:
             return False
@@ -49,12 +49,12 @@ ${tc.signature("ast","astType")}
         <#if genHelper.isOptionalAstNode(attribute)>
         # comparing ${attrName}
         if (self.${attrName} is not None != comp.${attrName} is not None) or \
-            (self.${attrName} is not None and not this.${attrName}.get().deepEqualsWithComments(comp.${attrName}.get())):
+            (self.${attrName} is not None and not self.${attrName}.get().deepEqualsWithComments(comp.${attrName}.get())):
           return False
         <#elseif genHelper.isAstNode(attribute)>
         # comparing ${attrName}
         if (self.${attrName} is None and comp.${attrName} is not None) or \
-            (this.${attrName} is not None and not self.${attrName}.deepEqualsWithComments(comp.${attrName})):
+            (self.${attrName} is not None and not self.${attrName}.deepEqualsWithComments(comp.${attrName})):
             return False
         <#elseif genHelper.isListAstNode(attribute)>
         # comparing ${attrName}
@@ -69,15 +69,14 @@ ${tc.signature("ast","astType")}
                     if not it1[i].deepEqualsWithComments(it2[i]):
                         return False
             else:
-        java.util.Iterator<${astChildTypeName}> it1 = this.${attrName}.iterator();
-            for elemOne in self.${attrName}:
-                matchFound = False
-                for elemTwo in comp.${attrName}:
-                    if elemOne.deepEqualsWithComments(elemTwo):
-                        matchFound = True
-                        break
-                if not matchFound:
-                    return False
+                for elemOne in self.${attrName}:
+                    matchFound = False
+                    for elemTwo in comp.${attrName}:
+                        if elemOne.deepEqualsWithComments(elemTwo):
+                            matchFound = True
+                            break
+                    if not matchFound:
+                        return False
        </#if>
      </#list>
         return True

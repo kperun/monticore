@@ -34,8 +34,8 @@ ${tc.signature("ast","astType")}
    <#assign genHelper = glex.getGlobalVar("astHelper")>
    <#assign astName = genHelper.getPlainName(astType)>
         comp = None
-        if isinstanceof (_o, ${astName}):
-            comp = _o;
+        if isinstance(_o, ${astName}):
+            comp = _o
         else:
             return False
 
@@ -60,19 +60,19 @@ ${tc.signature("ast","astType")}
         if len(self.get_PreComments()) == len(comp.get_PreComments()):
             one = self.get_PreComments()
             two = comp.get_PreComments()
-            for i in rang(0,len(self.get_PreComments())):
-            if not one[i].equals(two[i]):
-                return False
+            for i in range(0,len(self.get_PreComments())):
+                if not one[i].equals(two[i]):
+                    return False
         else:
-            return False;
+            return False
 
         if len(self.get_PostComments()) == len(comp.get_PostComments()):
             one = self.get_PostComments()
             two = comp.get_PostComments()
-            for i in rang(0,len(self.get_PostComments())):
+            for i in range(0,len(self.get_PostComments())):
                 if not one[i].equals(two[i]):
                     return False
-                else:
-                    return False;
+        else:
+            return False
 
-        return true;
+        return True

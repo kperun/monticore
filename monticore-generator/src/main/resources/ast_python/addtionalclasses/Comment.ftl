@@ -106,7 +106,7 @@ class Comment(object):
         :param _o
         :type _o: object
         """
-        if isinstanceof(_o,Comment):
+        if isinstance(_o,Comment):
             return self.text == _o.getText
         return False
 

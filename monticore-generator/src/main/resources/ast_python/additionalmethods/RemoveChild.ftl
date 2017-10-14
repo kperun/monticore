@@ -42,10 +42,10 @@ ${tc.signature("ast","type")}
         if self.${attrGetter}() is _child:
             self.${attrSetter}(None)
     <#elseif genHelper.isOptionalAstNode(field)><#assign generated = true>
-        if ${attrGetter}() is _child:
+        if self.${attrGetter}() is _child:
             self.${attrSetter}(None)
     <#elseif genHelper.isListAstNode(field)><#assign generated = true>
-        if _child in ${attrGetter}():
+        if _child in self.${attrGetter}():
             self.${attrGetter}().remove(_child)
     </#if>
   </#list>

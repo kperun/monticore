@@ -108,7 +108,7 @@ class SourcePosition(object):
         :return
         :rtype bool
         """
-        if not isinstanceof(_o,SourcePosition):
+        if not isinstance(_o,SourcePosition):
             return False
         else:
             return self.__line. == _o.getLine() and self.__column == _o.getColumn() and self.__fileName == _o.getFileName()
