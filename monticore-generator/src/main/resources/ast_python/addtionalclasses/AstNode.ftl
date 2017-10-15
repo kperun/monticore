@@ -39,24 +39,27 @@ class AstNode(object):
     Foundation interface for all AST-classes.
     """
 
-    def deepClone(self, _result = Node ):
+    def deepClone(self, _result = None ):
         """
         Performs a deep clone of this ASTNode and all of its successors
         :return Clone of current ASTNode with a parent which is equal to null
         """
         assert (_result is not None),\
             "0xA4040 The argument ASTNode of the 'deepClone' method must not be null."
+        if _result is not None:
+            _result.setSourcePositionStart(self.getSourcePositionStart().clone())
+            _result.setSourcePositionEnd(self.getSourcePositionEnd().clone())
 
-        _result.setSourcePositionStart(self.getSourcePositionStart().clone())
-        _result.setSourcePositionEnd(self.getSourcePositionEnd().clone())
+            for x in self.getPreComments():
+                _result.getPreComments().add(Comment(x.getText()))
 
-        for  x in self.getPreComments():
-            _result.getPreComments().add(Comment(x.getText()))
+            for x in self.getPostComments():
+                _result.getPostComments().add(Comment(x.getText()))
 
-        for x in self.getPostComments())
-            _result.getPostComments().add(Comment(x.getText()))
+            return _result
+        else:
+            pass
 
-        return _result
 
     def equalAttributes(self, _o = None):
         """
@@ -67,7 +70,7 @@ class AstNode(object):
         """
         if _o is None:
             return False
-        raise CompareNotSupportedException("0xA4041 Method equalAttributes is not implemented properly in class: " + type(_o))
+        raise CompareNotSupportedException("0xA4041 Method equalAttributes is not implemented properly in class: " + str(type(_o)))
 
     def equalsWithComments(self, _o = None ):
         """
@@ -78,7 +81,7 @@ class AstNode(object):
         """
         if _o is None:
             return False
-        raise CompareNotSupportedException("0xA4042 Method equalsWithComments is not implemented properly in class: "+ type(_o))
+        raise CompareNotSupportedException("0xA4042 Method equalsWithComments is not implemented properly in class: "+ str(type(_o)))
 
     def deepEquals(self, _o = None, _forceSameOrder = False ):
         """
@@ -91,7 +94,7 @@ class AstNode(object):
         """
         if _o is None:
             return False
-        raise CompareNotSupportedException("0xA4045 Method deepEquals is not implemented properly in class: " + type(_o))
+        raise CompareNotSupportedException("0xA4045 Method deepEquals is not implemented properly in class: " + str(type(_o)))
 
 
     def deepEqualsWithComments(self, _o = None, _forceSameOrder = False ):
@@ -108,17 +111,9 @@ class AstNode(object):
         """
         if _o is None:
             return False
-        raise CompareNotSupportedException("0xA4046 Method deepEqualsWithComments is not implemented properly in class: " + type(_o));
+        raise CompareNotSupportedException("0xA4046 Method deepEqualsWithComments is not implemented properly in class: " + str(type(_o)))
 
-    def deepClone(self):
-        """
-        Performs a deep clone of this ASTNode and all of its successors
-        :return Clone of current ASTNode with a parent which is equal to null
-        :rtype ASTNode
-        """
-        pass
-
-    def getSourcePositionEnd(self);
+    def getSourcePositionEnd(self):
         """
         Returns the start position of this ASTNode
         :return start position of this ASTNode
@@ -126,7 +121,7 @@ class AstNode(object):
         """
         pass
 
-    def setSourcePositionEnd(self, _end = None );
+    def setSourcePositionEnd(self, _end = None ):
         """
         Sets the end position of this ASTNode
         :param _end end position of this ASTNode
@@ -134,7 +129,7 @@ class AstNode(object):
         """
         pass
 
-    def getSourcePositionStart(self);
+    def getSourcePositionStart(self):
         """
         Returns the end source position of this ASTNode
         :return end position of this ASTNode
@@ -142,7 +137,7 @@ class AstNode(object):
         """
         pass
 
-    def setSourcePositionStart(self, _start = None );
+    def setSourcePositionStart(self, _start = None ):
         """
         Sets the start position of this ASTNode
         :param _start: start position of this ASTNode
@@ -150,16 +145,16 @@ class AstNode(object):
         """
         pass
 
-    def get_PreComments(self);
+    def getPreComments(self):
         """
         Returns list of all comments which are associated with this ASTNode and are
         prior to the ASTNode in the input file
         :return list of comments
         :rtype list(Comment)
         """
-        pass
+        return list()
 
-    def setPreComments(self, _precomments = None );
+    def setPreComments(self, _precomments = None ):
         """
         Sets list of all comments which are associated with this ASTNode and are
         prior to the ASTNode in the input file
@@ -168,16 +163,16 @@ class AstNode(object):
         """
         pass
 
-    def getPostComments(self);
+    def getPostComments(self):
         """
         Returns list of all comments which are associated with this ASTNode and can
         be found after the ASTNode in the input file
         :return list of comments
         :rtype list(Comment)
         """
-        pass
+        return list()
 
-    def setPostComments(self, _postcomments = None );
+    def setPostComments(self, _postcomments = None ):
         """
         Sets list of all comments which are associated with this ASTNode and can be
         found after the ASTNode in the input file.
@@ -193,7 +188,7 @@ class AstNode(object):
         """
         pass
 
-    def removeChild(self, _child = None );
+    def removeChild(self, _child = None ):
         """
         This method removes the reference from this node to a child node, no matter in which attribute it is stored.
         :param _child: the target node of the reference to be removed
@@ -201,7 +196,7 @@ class AstNode(object):
         """
         pass
 
-    def setEnclosingScope(self, _enclosingScope = None );
+    def setEnclosingScope(self, _enclosingScope = None ):
         """
         Sets the enclosing scope of this ast node.
         :param _enclosingScope: the enclosing scope of this ast node
@@ -271,6 +266,8 @@ class AstNode(object):
         pass
 
 class CompareNotSupportedException(Exception):
+    """
+    This exception indicates that a operation is not yet implemented.
     """
     pass
 

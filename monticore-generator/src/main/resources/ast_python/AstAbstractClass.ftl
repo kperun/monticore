@@ -50,7 +50,7 @@ class ${ast.getName()}(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def deepClone():
+    def deepClone(self):
         """
         :return a copy of self
         :rtype ${ast.getName()}
@@ -58,7 +58,7 @@ class ${ast.getName()}(object):
         pass
 
     @abstractmethod
-    def equals(_o = None):
+    def equals(self, _o = None):
         """
         :param _o: an object
         :type _o: object
@@ -68,7 +68,7 @@ class ${ast.getName()}(object):
         pass
 
     @abstractmethod
-    def equalsWithComments(_o = None):
+    def equalsWithComments(self, _o = None):
         """
         :param _o: an object
         :type _o: object
@@ -78,19 +78,7 @@ class ${ast.getName()}(object):
         pass
 
     @abstractmethod
-    def deepEquals(_o = None, _forceSameOrder=False):
-        """
-        :param _o: an object
-        :type _o: object
-        :param _forceSameOrder: enforces the everything has to be in the same order
-        :type _forceSameOrder: bool
-        :return True if equal, otherwise False.
-        :rtype bool
-        """
-        pass
-
-    @abstractmethod
-    def deepEqualsWithComments(_o = None, _forceSameOrder = None):
+    def deepEquals(self, _o = None, _forceSameOrder=False):
         """
         :param _o: an object
         :type _o: object
@@ -102,7 +90,19 @@ class ${ast.getName()}(object):
         pass
 
     @abstractmethod
-    def accept(_visitor=None):
+    def deepEqualsWithComments(self, _o = None, _forceSameOrder = None):
+        """
+        :param _o: an object
+        :type _o: object
+        :param _forceSameOrder: enforces the everything has to be in the same order
+        :type _forceSameOrder: bool
+        :return True if equal, otherwise False.
+        :rtype bool
+        """
+        pass
+
+    @abstractmethod
+    def accept(self, _visitor=None):
         """
         :param _visitor: a single visitor object
         :type _visitor: ${visitorType}

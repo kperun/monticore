@@ -17,6 +17,8 @@ import de.se_rwth.commons.Names;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class AstPythonGenerator {
@@ -44,6 +46,8 @@ public class AstPythonGenerator {
         setup.setGlex(glex);
         // we deactivate tracing in order to preserve the sensitive syntax of python
         setup.setTracing(false);
+        //python requires an __init__ file in order to be able to import modules
+        List<String> moduleInitList = new ArrayList<>();
 
         final GeneratorEngine generator = new GeneratorEngine(setup);
         final String astPackage = astHelper.getAstPackage();
@@ -55,10 +59,11 @@ public class AstPythonGenerator {
                     Names.getSimpleName(clazz.getName()) + PYTHON_EXTENSION);
             if (astHelper.isAstClass(clazz)) {
                 generator.generate("ast_python.AstClass", filePath, clazz, clazz, astHelper.getASTBuilder(clazz));
+                moduleInitList.add(clazz.getName());
             }
-            /*
-            else if (!AstGeneratorHelper.isBuilderClass(clazz)) {
-                generator.generate("ast.Class", filePath, clazz);//TODO
+            /*TODO @KP
+            else if (!AstPythonGeneratorHelper.isBuilderClass(clazz)) {
+                generator.generate("ast.Class", filePath, clazz);
             }*/
         }
         //interfaces are per-se not a part of python contract system, and are therefore implemented as abstract classes
@@ -67,11 +72,13 @@ public class AstPythonGenerator {
                     Names.getSimpleName(interf.getName()) + PYTHON_EXTENSION);
             generator.generate("ast_python.AstAbstractClass", filePath, interf, visitorPackage,
                     VisitorGeneratorHelper.getVisitorType(diagramName));
+            moduleInitList.add(interf.getName());
         }
         for (ASTCDEnum enm : astClassDiagram.getCDDefinition().getCDEnums()) {
             final Path filePath = Paths.get(Names.getPathFromPackage(astPackage),
                     Names.getSimpleName(enm.getName()) + PYTHON_EXTENSION);
             generator.generate("ast_python.AstEnum", filePath, enm);
+            moduleInitList.add(enm.getName());
         }
         // the ast node is the superclass of all the classes
         Path filePath = Paths.get(Names.getPathFromPackage(astPackage),
@@ -90,10 +97,21 @@ public class AstPythonGenerator {
         //generate the parser module
         filePath = Paths.get(Names.getPathFromPackage(astPackage),
                 "Parser" + PYTHON_EXTENSION);
+        /*TODO @KP this will be eventually part of _parser, thus implement it later
         String name = astClassDiagram.getCDDefinition().getName();
         generator.generate("ast_python.addtionalclasses.Parser", filePath,
                 astClassDiagram.getCDDefinition().getCDEnums().get(0),name);
-
+                */
+        //add the remaining pre-generated files to the list of inits
+        moduleInitList.add("Comment");
+        moduleInitList.add("Parser");
+        moduleInitList.add("SourcePosition");
+        //and generate the init file finally
+        filePath = Paths.get(Names.getPathFromPackage(astPackage),
+                "__init__" + PYTHON_EXTENSION);
+        generator.generate("ast_python.addtionalclasses.ModuleInit",filePath,
+                astClassDiagram.getCDDefinition().getCDEnums().get(0),
+                moduleInitList);
 
     }
 

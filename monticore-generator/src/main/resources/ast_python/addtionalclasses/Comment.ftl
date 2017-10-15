@@ -50,7 +50,7 @@ class Comment(object):
         :param _text:
         :type _text: str
         """
-        self.setText(text)
+        self.setText(_text)
 
     def getSourcePositionEnd(self):
         """
@@ -64,7 +64,7 @@ class Comment(object):
         :param _end
         :type _end: SourcePosition
         """
-        this.end = end
+        self.end = _end
 
     def getSourcePositionStart(self):
         """
@@ -78,7 +78,7 @@ class Comment(object):
         :param _start
         :type _start: SourcePosition
         """
-        self.start = start
+        self.start = _start
 
     def toString(self):
         """

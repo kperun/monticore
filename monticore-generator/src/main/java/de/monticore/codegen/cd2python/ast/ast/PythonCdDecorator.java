@@ -93,7 +93,11 @@ public class PythonCdDecorator extends CdDecorator{
 
             if (isOptional) {
                 toParse = "public boolean " + attributeName + "IsPresent() ;";
-                methodBody = new StringHookPoint("  return " + attributeName + ".isPresent(); \n");
+                if(attribute.getModifier().isPresent() && attribute.getModifier().get().isStatic()) {
+                    methodBody = new StringHookPoint("  return cls." + attributeName + " is not None\n");
+                }else{
+                    methodBody = new StringHookPoint("  return self." + attributeName + " is not None\n");
+                }
                 replaceMethodBodyTemplate(clazz, toParse, methodBody);
             }
         }

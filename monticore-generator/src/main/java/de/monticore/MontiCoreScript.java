@@ -463,7 +463,7 @@ public class MontiCoreScript extends Script implements GroovyRunner {
     boolean emfCompatible = false;
     createCdDecorator(glex, symbolTable, targetPath, emfCompatible).decorate(astClassDiagram);
   }
-  
+
   /**
    * Generates ast files for the given class diagram AST TODO: rephrase!
    *
@@ -475,11 +475,11 @@ public class MontiCoreScript extends Script implements GroovyRunner {
   public void generate(GlobalExtensionManagement glex, GlobalScope globalScope,
       ASTCDCompilationUnit astClassDiagram, File outputDirectory, IterablePath templatePath) {
     boolean emfCompatible = false;
-    AstPythonGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory, templatePath,
+    AstGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory, templatePath,
         emfCompatible);
-    PythonVisitorGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
-    //CoGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
-    //DGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
+    VisitorGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
+    CoCoGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
+    ODGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
   }
   
   /**
@@ -493,7 +493,8 @@ public class MontiCoreScript extends Script implements GroovyRunner {
    */
   public void decorateEmfCd(GlobalExtensionManagement glex,
       ASTCDCompilationUnit astClassDiagram, GlobalScope symbolTable, IterablePath targetPath) {
-    createPythonCdDecorator(glex, symbolTable, targetPath).decorate(astClassDiagram);
+    //TODO: change this as soon as the groovy script is able to process python @KP
+    decoratePythonCd(glex, astClassDiagram ,symbolTable, targetPath);
     /*
     boolean emfCompatible = true;
     createCdDecorator(glex, symbolTable, targetPath, emfCompatible).decorate(astClassDiagram);*/
@@ -509,8 +510,12 @@ public class MontiCoreScript extends Script implements GroovyRunner {
    */
   public void generateEmfCompatible(GlobalExtensionManagement glex, GlobalScope globalScope,
       ASTCDCompilationUnit astClassDiagram, File outputDirectory, IterablePath templatePath) {
-    generatePython(glex,globalScope,astClassDiagram,outputDirectory,templatePath);
-    /*boolean emfCompatible = true;
+    boolean emfCompatible = true;
+
+    //TODO: change this as soon as the groovy script is able to process python @KP
+    generatePython(glex, globalScope, astClassDiagram, outputDirectory, templatePath);
+    PythonVisitorGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
+    /*
     AstGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory, templatePath,
         emfCompatible);
     VisitorGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);
@@ -518,12 +523,27 @@ public class MontiCoreScript extends Script implements GroovyRunner {
     ODGenerator.generate(glex, globalScope, astClassDiagram, outputDirectory);*/
   }
 
+
+  /**
+   * Generates ast files for the given class diagram AST in python
+   * @param glex - object for managing hook points, features and global
+   * @param astClassDiagram
+   * @param symbolTable
+   * @param targetPath
+   */
   public void decoratePythonCd(GlobalExtensionManagement glex,
                                ASTCDCompilationUnit astClassDiagram, GlobalScope symbolTable, IterablePath targetPath){
-    boolean emfCompatible = false;
     createPythonCdDecorator(glex, symbolTable, targetPath).decorate(astClassDiagram);
   }
 
+  /**
+   * Generates a python diagram decorated as required to enrich the model with additional properties.
+   * @param glex
+   * @param globalScope
+   * @param astClassDiagram
+   * @param outputDirectory
+   * @param templatePath
+   */
   public void generatePython(GlobalExtensionManagement glex, GlobalScope globalScope,
                              ASTCDCompilationUnit astClassDiagram, File outputDirectory, IterablePath templatePath){
     boolean emfCompatible = false;

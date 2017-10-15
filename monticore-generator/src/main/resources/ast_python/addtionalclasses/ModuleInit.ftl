@@ -30,35 +30,6 @@ negligence or otherwise) arising in any way out of the use of this
 software, even if advised of the possibility of such damage.
 ****************************************************************************
 -->
-${tc.signature("ast","astType")}
-    <#assign genHelper = glex.getGlobalVar("astHelper")>
-    <#assign astName = genHelper.getPlainName(astType)>
-    <#if genHelper.hasOnlyAstAttributes(astType)>
-        return isinstance(_o, ${astName})
-    <#else>
-        comp = None
-        if isinstance(_o, ${astName}):
-            comp = _o
-        else:
-            return False
-    <#list astType.getCDAttributes()  as attribute>
-    <#assign attributeName = genHelper.getJavaConformName(attribute.getName())>
-    <#if !genHelper.isAstNode(attribute) && !genHelper.isOptionalAstNode(attribute) && !genHelper.isListAstNode(attribute)>
-        # comparing ${attributeName}
-    <#if genHelper.isPrimitive(attribute.getType())>
-        if not self.${attributeName} == comp.${attributeName}:
-            return False
-    <#elseif genHelper.isOptional(attribute)>
-        if (self.${attributeName} is not None != comp.${attributeName} is not None) or \
-            (self.${attributeName} is not None and not self.${attributeName}.equals(comp.${attributeName})):
-            return False
-    <#else>
-        if (self.${attributeName} is None and comp.${attributeName} is not None) or \
-            (self.${attributeName} is not None and not self.${attributeName}.equals(comp.${attributeName})):
-            return False
-    </#if>
-    </#if>
-    </#list>
-        return True
-    </#if>
-
+<#-- This template is required in order to generate the AST superclass in python. -->
+${tc.signature("moduleInitList")}
+__all__ = [<#list moduleInitList as toImport>'${toImport}'<#if (toImport?index < moduleInitList?size -1 )>, </#if></#list>]

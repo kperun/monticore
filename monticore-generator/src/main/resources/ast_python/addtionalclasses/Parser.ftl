@@ -64,5 +64,5 @@ class Parser(object):
         # parse the file
         parser = ${name}Parser(stream)
         # create a new visitor and return the new AST
-        astBuilderVisitor = ASTBuilderVisitor()
+        astBuilderVisitor = AstBuilderVisitor()
         return astBuilderVisitor.visit(parser.${name}())

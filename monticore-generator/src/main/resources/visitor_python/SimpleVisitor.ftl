@@ -64,7 +64,7 @@ class ${genHelper.getVisitorType()}:
     """
 
 
-    def setRealThis( _realThis = None):
+    def setRealThis(self, _realThis = None):
         """
         Sets the visitor to use for handling and traversing nodes.
         This method is not implemented by default and visitors intended for reusage
@@ -80,7 +80,7 @@ class ${genHelper.getVisitorType()}:
         """
         raise Exception("0xA7011${genHelper.getGeneratedErrorCode(ast)} The setter for realThis is not implemented. You might want to implement a wrapper class to allow setting/getting realThis.")
 
-    def getRealThis():
+    def getRealThis(self):
         """
         By default this method returns {@code this}. Visitors intended for reusage
         in other languages should override this method together with
@@ -95,7 +95,7 @@ class ${genHelper.getVisitorType()}:
     # ------------------------------------------------------------------------
 
 
-    def visit( _node = None):
+    def visit(self, _node = None):
         """
         Python does not allow overloading of methods, thus a special visit method is used which
         delegates according to the type.
@@ -103,11 +103,13 @@ class ${genHelper.getVisitorType()}:
         :param _node: the node that is entered
         """
         <#list cd.getTypes() as type>
-        if isinstnace( _node , ${type} ):
-            visit${type}(_node)
+        <#if type.isClass() && !type.isAbstract()>
+        if isinstance( _node , ${type} ):
+            self.visit${type}(_node)
+        </#if>
         </#list>
 
-    def traverse( _node = None):
+    def traverse(self, _node = None):
         """
         Python does not allow overloading of methods, thus a special visit method is used which
         delegates according to the type.
@@ -115,12 +117,14 @@ class ${genHelper.getVisitorType()}:
         :param _node: the node that is entered
         """
         <#list cd.getTypes() as type>
-        if isinstnace( _node , ${type} ):
-            traverse${type}(_node)
+        <#if type.isClass() && !type.isAbstract()>
+        if isinstance( _node , ${type} ):
+            self.traverse${type}(_node)
+        </#if>
         </#list>
 
 
-    def endVisit( _node = None):
+    def endVisit(self, _node = None):
         """
         Python does not allow overloading of methods, thus a special visit method is used which
         delegates according to the type.
@@ -128,8 +132,10 @@ class ${genHelper.getVisitorType()}:
         :param _node: the node that is left
         """
         <#list cd.getTypes() as type>
-        if isinstnace( _node , ${type} ):
-            endVisit${type}(_node)
+        <#if type.isClass() && !type.isAbstract()>
+        if isinstance( _node , ${type} ):
+            self.endVisit${type}(_node)
+        </#if>
         </#list>
 
     # ------------------------------------------------------------------------
@@ -139,44 +145,49 @@ class ${genHelper.getVisitorType()}:
     <#if type.isClass() || type.isInterface() >
     <#assign astName = type.getName()>
 
-    def visit${astName}( _node = None ):
+    def visit${astName}(self, _node = None ):
         pass
 
-    def endVisit${astName}( _node = None ):
+    def endVisit${astName}(self, _node = None ):
         pass
 
-    def handle${astName}( _node = None ):
+    def handle${astName}(self, _node = None ):
         self.getRealThis().visit(_node)
         <#if type.isInterface() || type.isEnum()>
-        // no traverse() for interfaces and enums, only concrete classes are traversed
+        # no traverse() for interfaces and enums, only concrete classes are traversed
         <#elseif type.isAbstract() >
-        // no traverse() for abstract classes, only concrete subtypes are traversed
+        # no traverse() for abstract classes, only concrete subtypes are traversed
         <#else>
-        self.getRealThis().traverse(_node);
+        self.getRealThis().traverse(_node)
         </#if>
-        self.getRealThis().endVisit(_node);
+        self.getRealThis().endVisit(_node)
     </#if>
 
     <#if type.isClass() && !type.isAbstract()>
-    def traverse${astName}( _node = None ):
+    def traverse${astName}(self, _node = None ):
         # One might think that we could call traverse(subelement) immediately,
         # but this is not true for interface-types where we do not know the
         # concrete type of the element.
         # Instead we double-dispatch the call, to call the correctly typed
         # traverse(...) method with the elements concrete type.
+        <#assign somethingGenerated = false>
         <#list type.getAllVisibleFields() as field>
             <#if genHelper.isAstNode(field) || genHelper.isOptionalAstNode(field) >
                 <#assign attrGetter = genHelper.getPlainGetter(field)>
+                <#assign somethingGenerated = true>
         if (_node.${attrGetter}() is not None):
             _node.${attrGetter}().accept(self.getRealThis())
             <#elseif genHelper.isListAstNode(field)>
                 <#assign attrGetter = genHelper.getPlainGetter(field)>
                 <#assign astChildTypeName = genHelper.getAstClassNameForASTLists(field)>
+                <#assign somethingGenerated = true>
         for node in _node.${attrGetter}():
             node.accept(self.getRealThis())
             </#if>
         </#list>
-
+        <#if !somethingGenerated>
+        pass
+        </#if>
     </#if>
     </#list>
 

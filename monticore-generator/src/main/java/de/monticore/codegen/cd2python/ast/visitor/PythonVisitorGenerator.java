@@ -52,7 +52,7 @@ public class PythonVisitorGenerator {
         generator.generate("visitor_python.AstBuilderVisitor", astBuilderVisitorFilePath , astClassDiagram,
                 astClassDiagram.getCDDefinition(), astPackage, cd);
 
-        Log.trace(LOGGER_NAME, "Generated simple python visitor for the diagram: " + diagramName);
+        Log.trace(LOGGER_NAME, "Generated python visitors for the diagram: " + diagramName);
     }
 
     private PythonVisitorGenerator() {

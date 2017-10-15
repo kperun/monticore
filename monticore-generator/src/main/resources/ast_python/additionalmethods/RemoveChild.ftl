@@ -50,5 +50,6 @@ ${tc.signature("ast","type")}
     </#if>
   </#list>
   <#if !generated>
+        # this class does not have any child-nodes
         pass
   </#if>

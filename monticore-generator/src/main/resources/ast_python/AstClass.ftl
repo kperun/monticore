@@ -74,5 +74,5 @@ class ${ast.getName()}(${genHelper.getSuperClassesAsString(ast)}):
 
     # class content
     <#if astBuilder.isPresent()>
-    <#--${tc.includeArgs("ast_python.AstBuilder", [astBuilder.get(), ast])} -->TODO
+    <#--${tc.includeArgs("ast_python.AstBuilder", [astBuilder.get(), ast])} -->#TODO
     </#if>

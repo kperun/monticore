@@ -34,7 +34,7 @@ ${tc.signature("ast","astType")}
 <#assign genHelper = glex.getGlobalVar("astHelper")>
 <#assign astName = genHelper.getPlainName(astType)>
     <#if astType.getCDAttributes()?size == 0>
-        return instanceof(_o, ${astName})
+        return isinstance(_o, ${astName})
     <#else>
         comp = None
         if isinstance(_o, ${astName}):

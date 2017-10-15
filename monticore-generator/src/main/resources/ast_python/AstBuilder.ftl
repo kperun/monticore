@@ -32,21 +32,21 @@ software, even if advised of the possibility of such damage.
 -->
 ${tc.signature("ast", "astType")}
 <#assign genHelper = glex.getGlobalVar("astHelper")>
- /**
-   * Builder for {@link ${astType.getName()}}.
-   */
-  public static class Builder <#if astType.getSuperclass().isPresent()>extends ${genHelper.getSuperClassForBuilder(astType)}.Builder</#if> {
-  <#list astType.getCDAttributes() as attribute>
+    """
+    Builder for {@link ${astType.getName()}}.
+    """
+    class Builder(object):
+    <#list astType.getCDAttributes() as attribute>
     <#if !genHelper.isInherited(attribute) && !genHelper.isAdditionalAttribute(attribute)>
     ${tc.include("ast.BuilderAttribute", attribute)}
     </#if>
-  </#list>
+    </#list>
     <#if astType.getModifier().isPresent() && !astType.getModifier().get().isAbstract()>
     <#assign typeName = genHelper.getPlainName(astType)>
-    public ${typeName} build() {
-      return new ${typeName} (${tc.include("ast.ParametersDeclaration", ast)}
-      );
+    def build(self):
+        return new ${typeName} (${tc.include("ast.ParametersDeclaration", ast)}
+
     }
     ${tc.include("ast.AstBuilderAttributeSetter", genHelper.getNativeCDAttributes(astType))}
-    </#if>  
-  }    
+    </#if>
+    }
