@@ -103,7 +103,11 @@ public class AstPythonGeneratorHelper extends AstEmfGeneratorHelper {
     }
 
 
-
+    /**
+     * Returns a list of all interfaces a single class implements.
+     * @param astcdClass a single class object
+     * @return a list of implemented interfaces
+     */
     public static List<String> getInterfaces(ASTCDClass astcdClass){
         List<String> ret = new ArrayList<>();
         for (ASTReferenceType type:astcdClass.getInterfaces()){
@@ -129,6 +133,13 @@ public class AstPythonGeneratorHelper extends AstEmfGeneratorHelper {
         }
     }
 
+    /**
+     * There are not actual modifiers in python but only some guidelines. In order to mark something as "private"
+     * we have to use the prefix __.
+     * @param astcdMethod a single method object
+     * @return the corresponding prefix
+     */
+    @SuppressWarnings("unused")//used in the template
     public static String printModifier(ASTCDMethod astcdMethod){
         if(astcdMethod.getModifier().isPrivate()){
             return "__";
@@ -168,14 +179,14 @@ public class AstPythonGeneratorHelper extends AstEmfGeneratorHelper {
     public static String printParametersDeclaration(ASTCDMethod astcdMethod){
         StringBuilder builder = new StringBuilder();
         for(ASTCDParameter parameter:astcdMethod.getCDParameters()){
-            builder.append((String)(PARAMETER_PREFIX + parameter.getName()));
-            builder.append((String)(" = "));
-            builder.append((String)(" None"));
-            builder.append(",");
+            builder.append((PARAMETER_PREFIX + parameter.getName()));
+            builder.append(("="));
+            builder.append(("None"));
+            builder.append(", ");
         }
         if (astcdMethod.getCDParameters().size() > 0){
-            // the last ',' is not required
-            builder.deleteCharAt(builder.length()-1);
+            // the last ', ' is not required
+            builder.deleteCharAt(builder.length()-2);
         }
         return builder.toString();
     }
@@ -202,16 +213,6 @@ public class AstPythonGeneratorHelper extends AstEmfGeneratorHelper {
     }
 
     @SuppressWarnings("unused")//used in the template
-    public static boolean isAbstract(ASTCDClass astcdClass){
-        return astcdClass.getModifier().isPresent() && astcdClass.getModifier().get().isAbstract();
-    }
-
-    @SuppressWarnings("unused")//used in the template
-    public static boolean isBoolean(ASTCDAttribute astcdAttribute){
-        return astcdAttribute.getType() instanceof ASTPrimitiveType &&((ASTPrimitiveType) astcdAttribute.getType()).isBoolean();
-    }
-
-    @SuppressWarnings("unused")//used in the template
     public static String printPrefixedNamed(ASTCDParameter astcdParameter){
         return PARAMETER_PREFIX + astcdParameter.getName();
     }
@@ -230,6 +231,20 @@ public class AstPythonGeneratorHelper extends AstEmfGeneratorHelper {
     public static boolean isStaticMethod(ASTCDMethod astcdMethod){
         return astcdMethod.getModifier().isStatic();
     }
+
+    @SuppressWarnings("unused")//used in the template
+    public static boolean isAbstractMethod(ASTCDMethod astcdMethod){return astcdMethod.getModifier().isAbstract();}
+
+    @SuppressWarnings("unused")//used in the template
+    public static boolean isBoolean(ASTCDAttribute astcdAttribute){
+        return astcdAttribute.getType() instanceof ASTPrimitiveType &&((ASTPrimitiveType) astcdAttribute.getType()).isBoolean();
+    }
+
+    @SuppressWarnings("unused")//used in the template
+    public static boolean isAbstract(ASTCDClass astcdClass){
+        return astcdClass.getModifier().isPresent() && astcdClass.getModifier().get().isAbstract();
+    }
+
 
 
 }
