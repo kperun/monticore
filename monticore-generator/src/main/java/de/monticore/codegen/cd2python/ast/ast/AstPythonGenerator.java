@@ -61,10 +61,9 @@ public class AstPythonGenerator {
                 generator.generate("ast_python.AstClass", filePath, clazz, clazz, astHelper.getASTBuilder(clazz));
                 moduleInitList.add(clazz.getName());
             }
-            /*TODO @KP
             else if (!AstPythonGeneratorHelper.isBuilderClass(clazz)) {
-                generator.generate("ast.Class", filePath, clazz);
-            }*/
+                generator.generate("ast_python.Class", filePath, clazz);
+            }
         }
         //interfaces are per-se not a part of python contract system, and are therefore implemented as abstract classes
         for (ASTCDInterface interf : astClassDiagram.getCDDefinition().getCDInterfaces()) {

@@ -1,11 +1,13 @@
 package de.monticore.codegen.cd2python.ast.ast;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import de.monticore.codegen.GeneratorHelper;
 import de.monticore.codegen.cd2java.ast.AstAdditionalMethods;
 import de.monticore.codegen.cd2java.ast.AstGeneratorHelper;
 import de.monticore.codegen.cd2java.ast.CdDecorator;
 import de.monticore.codegen.cd2java.visitor.VisitorGeneratorHelper;
+import de.monticore.codegen.mc2cd.TransformationHelper;
 import de.monticore.generating.templateengine.GlobalExtensionManagement;
 import de.monticore.generating.templateengine.HookPoint;
 import de.monticore.generating.templateengine.StringHookPoint;
@@ -14,18 +16,15 @@ import de.monticore.io.paths.IterablePath;
 import de.monticore.symboltable.GlobalScope;
 import de.monticore.types.TypesHelper;
 import de.monticore.types.TypesPrinter;
-import de.monticore.umlcd4a.cd4analysis._ast.ASTCDAttribute;
-import de.monticore.umlcd4a.cd4analysis._ast.ASTCDClass;
-import de.monticore.umlcd4a.cd4analysis._ast.ASTCDMethod;
-import de.monticore.umlcd4a.cd4analysis._ast.ASTModifier;
+import de.monticore.types.types._ast.ASTType;
+import de.monticore.umlcd4a.cd4analysis._ast.*;
 import de.monticore.umlcd4a.symboltable.CDSymbol;
 import de.monticore.umlcd4a.symboltable.CDTypeSymbol;
 import de.se_rwth.commons.Names;
 import de.se_rwth.commons.logging.Log;
 import groovyjarjarantlr.ANTLRException;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 public class PythonCdDecorator extends CdDecorator{
@@ -104,11 +103,11 @@ public class PythonCdDecorator extends CdDecorator{
     }
 
     /**
-     * Adds common ast methods to the all classes in the class diagram
+     * Adds common ast methods to the all classes in the class diagram.
      *
      * @param clazz - each entry contains a class diagram class and a respective
      * builder class
-     * @param astHelper
+     * @param astHelper a generator helper with python specific helper functions
      * @throws ANTLRException
      */
     protected void addAdditionalMethods(ASTCDClass clazz,
@@ -171,4 +170,128 @@ public class PythonCdDecorator extends CdDecorator{
 
     }
 
+    /**
+     * Creates a node factory for the corresponding set of nodes as stored in the compilation unit
+     *
+     * @param cdCompilationUnit a single compilation unit with several classes.
+     * @param nativeClasses a list of native classes, i.e., those classes which were present in the CD
+     * @param astHelper a helper object
+     * @throws ANTLRException
+     */
+    protected void addNodeFactoryClass(ASTCDCompilationUnit cdCompilationUnit,
+                                       List<ASTCDClass> nativeClasses, AstGeneratorHelper astHelper) {
+
+        // Add factory-attributes for all ast classes
+        Set<String> astClasses = new LinkedHashSet<>();
+        nativeClasses.stream()
+                .forEach(e -> astClasses.add(GeneratorHelper.getPlainName(e)));
+
+        ASTCDClass nodeFactoryClass = createNodeFactoryClass(cdCompilationUnit, nativeClasses,
+                astHelper, astClasses);
+
+        // We only modify the path to the template which is used to print the factory
+        glex.replaceTemplate(CLASS_CONTENT_TEMPLATE, nodeFactoryClass, new TemplateHookPoint(
+                "ast_python.AstNodeFactory", nodeFactoryClass, nativeClasses));
+
+    }
+
+    /**
+     * Adds all required methods to the factory.
+     * @param clazz a single class object.
+     * @param nodeFactoryClass the factory class object
+     * @param astHelper a helper containing additional information
+     */
+    protected void addMethodsToNodeFactory(ASTCDClass clazz, ASTCDClass nodeFactoryClass,
+                                           AstGeneratorHelper astHelper) {
+        if (!clazz.getModifier().isPresent() || clazz.getModifier().get().isAbstract()) {
+            return;
+        }
+        String className = GeneratorHelper.getPlainName(clazz);
+        String toParse = "";
+        // No create methods with parameters
+        if (clazz.getCDAttributes().isEmpty()) {
+            return;
+        }
+
+        toParse = "public static " + className + " create" + className + "() ;";
+
+        Optional<ASTCDMethod> astMethod = cdTransformation.addCdMethodUsingDefinition(
+                nodeFactoryClass, toParse);
+        Preconditions.checkArgument(astMethod.isPresent());
+        ASTCDMethod createMethod = astMethod.get();
+
+        toParse = "protected " + className + " doCreate" + className + "() ;";
+        astMethod = cdTransformation.addCdMethodUsingDefinition(
+                nodeFactoryClass, toParse);
+        Preconditions.checkArgument(astMethod.isPresent());
+        ASTCDMethod doCreateMethod = astMethod.get();
+
+        StringBuilder paramCall = new StringBuilder();
+        List<ASTCDAttribute> parameters = Lists.newArrayList();
+        String del = "";
+        List<ASTCDAttribute> inheritedAttributes = Lists.newArrayList();
+        for (ASTCDAttribute attr : clazz.getCDAttributes()) {
+            if (GeneratorHelper.isInherited(attr)) {
+                inheritedAttributes.add(attr);
+                continue;
+            }
+            ASTCDParameter param = CD4AnalysisNodeFactory.createASTCDParameter();
+            ASTType type = attr.getType();
+            if (TypesHelper.isOptional(type)) {
+                type = TypesHelper.getSimpleReferenceTypeFromOptional(type);
+            }
+            else {
+                parameters.add(attr);
+            }
+            param.setType(type);
+            String pythonAttrName = AstPythonGeneratorHelper.getPythonConformName(attr.getName());
+            param.setName(pythonAttrName );
+            ASTCDParameter doParam = param.deepClone();
+            createMethod.getCDParameters().add(param);
+            doCreateMethod.getCDParameters().add(doParam);
+            paramCall.append(del + "_"+pythonAttrName );
+            del = DEL;
+        }
+
+        for (ASTCDAttribute attr : inheritedAttributes) {
+            ASTCDParameter param = CD4AnalysisNodeFactory.createASTCDParameter();
+            ASTType type = attr.getType();
+            if (TypesHelper.isOptional(type)) {
+                type = TypesHelper.getSimpleReferenceTypeFromOptional(type);
+            }
+            else {
+                parameters.add(attr);
+            }
+            param.setType(type);
+            String pythonAttrName  = AstPythonGeneratorHelper.getPythonConformName(attr.getName());
+            param.setName(pythonAttrName );
+            ASTCDParameter doParam = param.deepClone();
+            createMethod.getCDParameters().add(param);
+            doCreateMethod.getCDParameters().add(doParam);
+            paramCall.append(del + "_" + pythonAttrName );
+            del = DEL;
+        }
+
+        // create() method
+        glex.replaceTemplate("ast_python.ParametersDeclaration", createMethod, new TemplateHookPoint(
+                "ast_python.ConstructorParametersDeclaration"));
+        glex.replaceTemplate(EMPTY_BODY_TEMPLATE, createMethod, new TemplateHookPoint(
+                "ast_python.factorymethods.CreateWithParams", clazz, className, paramCall.toString()));
+
+        // doCreate() method
+        glex.replaceTemplate("ast_python.ParametersDeclaration", doCreateMethod, new TemplateHookPoint(
+                "ast_python.ConstructorParametersDeclaration"));
+        glex.replaceTemplate(EMPTY_BODY_TEMPLATE, doCreateMethod, new TemplateHookPoint(
+                "ast_python.factorymethods.DoCreateWithParams", clazz, className, paramCall.toString()));
+
+        if (parameters.size() != createMethod.getCDParameters().size()) {
+            glex.replaceTemplate(ERROR_IFNULL_TEMPLATE, createMethod, new TemplateHookPoint(
+                    "ast_python.factorymethods.ErrorIfNull", parameters));
+        }
+        if (parameters.size() != doCreateMethod.getCDParameters().size()) {
+            glex.replaceTemplate(ERROR_IFNULL_TEMPLATE, doCreateMethod, new TemplateHookPoint(
+                    "ast_python.factorymethods.ErrorIfNull", parameters));
+        }
+
+    }
 }

@@ -2,6 +2,7 @@ package de.monticore.codegen.cd2python.ast.ast;
 
 import de.monticore.codegen.GeneratorHelper;
 import de.monticore.codegen.cd2java.ast_emf.AstEmfGeneratorHelper;
+import de.monticore.literals.literals._ast.ASTNullLiteral;
 import de.monticore.symboltable.GlobalScope;
 import de.monticore.types.TypesPrinter;
 import de.monticore.types.types._ast.ASTPrimitiveType;
@@ -26,6 +27,9 @@ public class AstPythonGeneratorHelper extends AstEmfGeneratorHelper {
     }
 
     public String getAstAttributeValue(ASTCDAttribute attribute) {
+        if (attribute.getValue().isPresent() && attribute.getValue().get().getSignedLiteral() instanceof ASTNullLiteral){
+            return "None";
+        }
         if (attribute.getValue().isPresent()) {
             return attribute.printValue();
         }
