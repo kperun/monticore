@@ -67,12 +67,14 @@ class ${ast.getName()}(${genHelper.getSuperClassesAsString(ast)}):
     <#if !genHelper.isAbstract(ast) >
     ${tc.includeArgs("ast_python.Init", [ast])}
     </#if>
+    <#-- generate toString method -->
+    ${tc.includeArgs("ast_python.additionalmethods.ToString", ast)}
     <#-- generate all methods -->
     <#list ast.getCDMethods() as method>
     ${tc.includeArgs("ast_python.ClassMethod", [method, ast])}
     </#list>
 
-    # class content
+    <#-- generate the builder -->
     <#if astBuilder.isPresent()>
-    <#--${tc.includeArgs("ast_python.AstBuilder", [astBuilder.get(), ast])} -->#TODO
+    ${tc.includeArgs("ast_python.AstBuilder", [astBuilder.get(), ast])}
     </#if>

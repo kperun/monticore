@@ -38,7 +38,7 @@ ${tc.signature("ast", "attributeName","isBooleanReturn")}
         :return
         :rtype bool
         """
-        return isinstance(<#if ast.getModifier().isPresent() && !ast.getModifier().get().isStatic()>self.<#else>cls.</#if>${attributeName},bool) and <#if ast.getModifier().isPresent() && !ast.getModifier().get().isStatic()> self.<#else>cls.</#if>${attributeName}
+        return isinstance(<#if ast.getModifier().isPresent() && !ast.getModifier().get().isStatic()>self.<#else>cls.</#if>${attributeName},bool) and <#if ast.getModifier().isPresent() && !ast.getModifier().get().isStatic()>self.<#else>cls.</#if>${attributeName}
         <#else>
         return <#if ast.getModifier().isPresent() && !ast.getModifier().get().isStatic()>self.<#else>cls.</#if>${attributeName}
         </#if>

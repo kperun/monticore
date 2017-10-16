@@ -135,7 +135,6 @@ public class PythonCdDecorator extends CdDecorator{
                         visitorTypeFQN, superVisitorTypeFQN));
             }
         }
-
         Optional<ASTModifier> modifier = clazz.getModifier();
         String plainClassName = GeneratorHelper.getPlainName(clazz);
         Optional<CDTypeSymbol> symbol = astHelper.getCd().getType(plainClassName);
@@ -163,7 +162,7 @@ public class PythonCdDecorator extends CdDecorator{
                 new TemplateHookPoint("ast_python.additionalmethods.RemoveChild", clazz, symbol.get()));
 
         replaceMethodBodyTemplate(clazz, AstAdditionalMethods.getBuilder.getDeclaration(),
-                new StringHookPoint("return new Builder();\n"));
+                new StringHookPoint("return Builder()\n"));
 
         String stringToParse = String.format(AstAdditionalMethods.deepClone.getDeclaration(),
                 plainClassName);

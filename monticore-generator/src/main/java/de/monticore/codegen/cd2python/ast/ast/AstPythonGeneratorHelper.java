@@ -4,6 +4,7 @@ import de.monticore.codegen.GeneratorHelper;
 import de.monticore.codegen.cd2java.ast_emf.AstEmfGeneratorHelper;
 import de.monticore.symboltable.GlobalScope;
 import de.monticore.types.TypesPrinter;
+import de.monticore.types.types._ast.ASTPrimitiveType;
 import de.monticore.types.types._ast.ASTReferenceType;
 import de.monticore.umlcd4a.cd4analysis._ast.*;
 
@@ -181,7 +182,7 @@ public class AstPythonGeneratorHelper extends AstEmfGeneratorHelper {
         for (ASTCDAttribute attribute:astcdClass.getCDAttributes()){
             builder.append(printPrefixedNamed(attribute));
             builder.append((String)(" = "));
-            builder.append((String)(" None"));
+            builder.append((String)("None"));
             builder.append(", ");
         }
         if (builder.length() > 0){
@@ -196,9 +197,14 @@ public class AstPythonGeneratorHelper extends AstEmfGeneratorHelper {
         return PARAMETER_PREFIX + astcdAttribute.getName();
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("unused")//used in the template
     public static boolean isAbstract(ASTCDClass astcdClass){
         return astcdClass.getModifier().isPresent() && astcdClass.getModifier().get().isAbstract();
+    }
+
+    @SuppressWarnings("unused")//used in the template
+    public static boolean isBoolean(ASTCDAttribute astcdAttribute){
+        return astcdAttribute.getType() instanceof ASTPrimitiveType &&((ASTPrimitiveType) astcdAttribute.getType()).isBoolean();
     }
 
     @SuppressWarnings("unused")//used in the template
@@ -206,15 +212,17 @@ public class AstPythonGeneratorHelper extends AstEmfGeneratorHelper {
         return PARAMETER_PREFIX + astcdParameter.getName();
     }
 
+    @SuppressWarnings("unused")//used in the template
     public static boolean hasBooleanReturn(ASTCDMethod astcdMethod){
-        String tmp = astcdMethod.getReturnType().getSymbol().get().getName();
         return astcdMethod.getReturnType().getSymbol().isPresent() && astcdMethod.getReturnType().getSymbol().get().getName().equals("boolean");
     }
 
+    @SuppressWarnings("unused")//used in the template
     public static boolean hasParameters(ASTCDMethod astcdMethod){
         return astcdMethod.getCDParameters().size() > 0;
     }
 
+    @SuppressWarnings("unused")//used in the template
     public static boolean isStaticMethod(ASTCDMethod astcdMethod){
         return astcdMethod.getModifier().isStatic();
     }
